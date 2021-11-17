@@ -7,6 +7,7 @@ module.exports = {
 	usage: '<words>',
 	async execute(message, args) {
 		const lastTwo = await message.channel.messages.fetch({ limit: 2 });
+		lastTwo.first().delete();
 		const allReactionsMap = message.client.reactions;
 		const mapExists = allReactionsMap.has(lastTwo.last());
 		let map = null;
@@ -46,17 +47,13 @@ module.exports = {
 					if (emoji) {
 						counter += 1;
 						if (lastTwo.last().deleted) {
-							setTimeout(() => { lastTwo.first().delete(); }, 500);
 							return;
 						}
 						lastTwo.last().react(emoji);
 					}
 				}
 			}
-			setTimeout(() => {
-				lastTwo.first().delete();
-				allReactionsMap.set(lastTwo.last(), map);
-			}, 500);
+			allReactionsMap.set(lastTwo.last(), map);
 		}
 		catch (e) {
 			console.log(e);
