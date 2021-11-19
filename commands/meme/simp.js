@@ -15,6 +15,6 @@ module.exports = {
 			output = `ATTN: ${message.author} is simping for ${target}!`;
 		}
 
-		setTimeout(() => { message.delete().then(message.channel.send(output)); }, 500);
+		message.delete().then(message.channel.send(output));
 	},
 };

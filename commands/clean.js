@@ -6,7 +6,11 @@ module.exports = {
 	usage: '<positive integer>',
 	execute(message, args) {
 		if (!message.member.hasPermission('MANAGE_MESSAGES')) {
-			return message.reply('Hey, you don\'t have the permissions to clean/clear messages!');
+			return message.reply('Hey, you don\'t have the permissions to clean/clear messages!')
+				.then(msg => setTimeout(function() {
+					msg.delete();
+					message.delete();
+				}, 3000));
 		}
 
 		if (parseInt(args[0])) {
@@ -25,7 +29,11 @@ module.exports = {
 
 		}
 		else {
-			message.channel.send(`You didn't specific a positive numeric argument, ${message.author}!`);
+			message.channel.send(`You didn't specific a positive numeric argument, ${message.author}!`)
+				.then(msg => setTimeout(function() {
+					msg.delete();
+					message.delete();
+				}, 3000));
 		}
 	},
 };

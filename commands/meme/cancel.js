@@ -19,6 +19,6 @@ module.exports = {
 			cancels.set(cancel, 1);
 		}
 
-		setTimeout(() => { message.delete().then(message.channel.send(`${cancel} ${grammar} officially cancelled. #${over}${grammar}overparty`)); }, 500);
+		message.delete().then(message.channel.send(`${cancel} ${grammar} officially cancelled. #${over}${grammar}overparty`));
 	},
 };

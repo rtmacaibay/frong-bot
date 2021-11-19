@@ -12,6 +12,6 @@ module.exports = {
 		const count = cancels.has(cancel) ? cancels.get(cancel) : 0;
 		const grammar = plural.isPlural(args[0]) || plural.isPlural(args[args.length - 1]) ? 'have' : 'has';
 
-		setTimeout(() => { message.delete().then(message.channel.send(`${cancel} ${grammar} been cancelled ${count} times.`)); }, 500);
+		message.delete().then(message.channel.send(`${cancel} ${grammar} been cancelled ${count} times.`));
 	},
 };
