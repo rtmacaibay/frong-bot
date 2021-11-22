@@ -10,7 +10,7 @@ module.exports = {
 				.then(msg => setTimeout(function() {
 					msg.delete();
 					message.delete();
-				}, 3000));
+				}, 5000));
 		}
 
 		if (parseInt(args[0])) {
@@ -33,7 +33,7 @@ module.exports = {
 				.then(msg => setTimeout(function() {
 					msg.delete();
 					message.delete();
-				}, 3000));
+				}, 5000));
 		}
 	},
 };

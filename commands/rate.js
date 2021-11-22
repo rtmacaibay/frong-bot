@@ -24,8 +24,7 @@ module.exports = {
 		}
 
 		return message.channel.send(`I rate ${final} a ${rating}`)
-			.then(msg => setTimeout(function() {
-				msg.delete();
+			.then(setTimeout(function() {
 				message.delete();
 			}, 3000));
 	},
