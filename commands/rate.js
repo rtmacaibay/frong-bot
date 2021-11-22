@@ -23,9 +23,6 @@ module.exports = {
 			ratings.set(query, rating);
 		}
 
-		return message.channel.send(`I rate ${final} a ${rating}`)
-			.then(setTimeout(function() {
-				message.delete();
-			}, 3000));
+		return message.delete().then(message.channel.send(`I rate ${final} a ${rating}`));
 	},
 };
