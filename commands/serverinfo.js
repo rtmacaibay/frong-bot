@@ -19,7 +19,7 @@ module.exports = {
 				`**Name:** ${message.guild.name}`,
 				`**ID:** ${message.guild.id}`,
 				`**Owner:** ${message.guild.owner.user.tag} (${message.guild.ownerID})`,
-				`**Time Created:** ${message.guild.createdAt.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}`,
+				`**Time Created:** ${message.guild.createdAt.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })} PST`,
 				'\u200b',
 			])
 			.addField('Statistics', [
