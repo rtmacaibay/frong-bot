@@ -2,7 +2,7 @@ module.exports = {
 	name: 'joined',
 	description: 'Displays when you joined the server',
 	aliases: ['j'],
-	args: true,
+	args: false,
 	usage: '<optional: @ a user to check their joined date',
 	execute(message, args) {
 		if (!args.length) {
