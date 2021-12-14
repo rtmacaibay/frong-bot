@@ -4,6 +4,6 @@ module.exports = {
 	aliases: ['j'],
 	args: false,
 	execute(message) {
-		return message.delete().then(message.channel.send(`${message.author} joined: ${message.member.joinedAt.toLocaleString('en-US', { timeZone: 'PST' })} PST`));
+		return message.delete().then(message.channel.send(`${message.author} joined: ${message.member.joinedAt.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })} PST`));
 	},
 };
