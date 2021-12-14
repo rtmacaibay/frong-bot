@@ -7,9 +7,9 @@ module.exports = {
 	args: false,
 	execute(message) {
 		const roles = message.guild.roles.cache.sort((a, b) => b.position - a.position).map(role => role.toString());
-		const members = message.guild.members.cache;
-		const channels = message.guild.channels.cache;
-		const emojis = message.guild.emojis.cache;
+		const members = message.guild.members.fetch();
+		const channels = message.guild.channels.fetch();
+		const emojis = message.guild.emojis.fetch();
 
 		const embed = new MessageEmbed()
 			.setDescription('**Server Info**')
