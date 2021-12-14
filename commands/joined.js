@@ -12,7 +12,7 @@ module.exports = {
 		}
 		else {
 			const member = message.mentions.users.first();
-			const joinedDate = message.mentions.users.first().joinedAt.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
+			const joinedDate = message.mentions.members.first().joinedAt.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
 			if (member != null) {
 				return message.delete().then(message.channel.send(`${member} joined: ${joinedDate} PST`));
 			}
