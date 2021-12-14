@@ -11,10 +11,11 @@ module.exports = {
 			return message.delete().then(message.channel.send(`${author} joined: ${joinedDate} PST`));
 		}
 		else {
-			const member = message.mentions.users.first();
-			const joinedDate = message.mentions.members.first().joinedAt.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
-			if (member != null) {
-				return message.delete().then(message.channel.send(`${member} joined: ${joinedDate} PST`));
+			const user = message.mentions.users.first();
+			const member = message.mentions.members.first();
+			if (member != null && user != null) {
+				const joinedDate = member.joinedAt.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
+				return message.delete().then(message.channel.send(`${user} joined: ${joinedDate} PST`));
 			}
 			else {
 				return message.delete().then(message.channel.send('Invalid user'));
