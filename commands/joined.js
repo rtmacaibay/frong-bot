@@ -13,7 +13,12 @@ module.exports = {
 		else {
 			const member = message.mentions.users.first();
 			const joinedDate = message.mentions.users.first().joinedAt.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
-			return message.delete().then(message.channel.send(`${member} joined: ${joinedDate} PST`));
+			if (member != null) {
+				return message.delete().then(message.channel.send(`${member} joined: ${joinedDate} PST`));
+			}
+			else {
+				return message.delete().then(message.channel.send('Invalid user'));
+			}
 		}
 	},
 };
