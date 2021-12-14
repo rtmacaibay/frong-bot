@@ -19,7 +19,6 @@ module.exports = {
 				`**Name:** ${message.guild.name}`,
 				`**ID:** ${message.guild.id}`,
 				`**Owner:** ${message.guild.owner.user.tag} (${message.guild.ownerID})`,
-				`**Boost Tier:** ${message.guild.premiumTier ? `Tier ${message.guild.premiumTier}` : 'None'}`,
 				`**Time Created:** ${message.guild.createdAt.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}`,
 				'\u200b',
 			])
@@ -41,8 +40,7 @@ module.exports = {
 				`**Do Not Disturb:** ${members.filter(member => member.presence.status === 'dnd').size}`,
 				`**Offline:** ${members.filter(member => member.presence.status === 'offline').size}`,
 				'\u200b',
-			])
-			.addField(`Roles [${roles.length - 1}]`, roles.join(', '));
+			]);
 
 		message.delete().then(message.channel.send(embed));
 	},
