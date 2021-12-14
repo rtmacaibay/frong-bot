@@ -6,7 +6,7 @@ module.exports = {
 	aliases: ['si'],
 	args: false,
 	execute(message) {
-		const roles = message.guild.roles.cache.sort((a, b) => b.position - a.position).map(role => role.toString());
+		const roles = message.guild.roles.fetch();
 		const members = message.guild.members.fetch();
 		const channels = message.guild.channels.fetch();
 		const emojis = message.guild.emojis.fetch();
