@@ -4,8 +4,8 @@
   "description": "",
   "main": "frong.js",
   "engines": {
-    "node": "12.x",
-    "npm": "6.14.4"
+    "node": "17.x",
+    "npm": "8.3.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

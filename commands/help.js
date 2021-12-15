@@ -48,9 +48,6 @@ module.exports = {
 		if (command.usage) data.push(`**Usage:** ${prefix}${command.name} ${command.usage}`);
 		if (command.cooldown) data.push(`**Cooldown:** ${command.cooldown} second(s)`);
 
-		message.channel.send(data, { split: true })
-			.then(setTimeout(function() {
-				message.delete();
-			}, 3000));
+		message.delete().then(message.channel.send(data, { split: true }));
 	},
 };

@@ -42,12 +42,11 @@ client.once('ready', () => {
 	client.user.setActivity(`${prefix}help & appreciating Jonathan`, {
 		type: 'LISTENING',
 		url: 'https://github.com/rtmacaibay/frong-bot',
-	})
-		.then(presence => console.log(`Activity set to ${presence.activities[0].name}`))
-		.catch(console.error);
+	});
+	console.log('Activity set!');
 });
 
-client.on('message', message => {
+client.on('messageCreate', message => {
 	const msg = message.content;
 
 	if (((msg.toLowerCase().includes('bobert') || msg.toLowerCase().includes('robert')) && msg.toLowerCase().includes('simp')) && !message.author.bot) {

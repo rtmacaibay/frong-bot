@@ -5,7 +5,7 @@ module.exports = {
 	aliases: ['clear'],
 	usage: '<positive integer>',
 	execute(message, args) {
-		if (!message.member.hasPermission('MANAGE_MESSAGES')) {
+		if (!message.member.permissions.has('MANAGE_MESSAGES')) {
 			return message.reply('Hey, you don\'t have the permissions to clean/clear messages!')
 				.then(msg => setTimeout(function() {
 					msg.delete();
