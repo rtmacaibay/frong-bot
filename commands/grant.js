@@ -12,7 +12,7 @@ module.exports = {
 				const user = message.mentions.users.first();
 				const member = message.mentions.members.first();
 				if (member != null && user != null) {
-					member.roles.add(744476760485265479);
+					member.roles.add('744476760485265479');
 					return message.delete().then(message.channel.send(`${user} now has the <@&744476760485265479>`));
 				} else {
 					return message.delete().then(message.channel.send('Invalid user'));
