@@ -29,7 +29,7 @@ module.exports = {
 				.then((messages) =>
 					message.channel
 						.send(
-							`The Yummy has taken ${messages.size - 1} messages to the beyond.`,
+							`The ${message.guild.name} has taken ${messages.size - 1} messages to the beyond.`,
 						)
 						.then((msg) =>
 							setTimeout(function() {
