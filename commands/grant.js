@@ -13,12 +13,12 @@ module.exports = {
 				const member = message.mentions.members.first();
 				if (member != null && user != null) {
 					member.roles.add('744476760485265479');
-					return message.delete().then(message.channel.send(`${user} now has the <@&744476760485265479>`));
+					return message.delete().then(message.channel.send('lul').then(msg => msg.edit(`${user} now has the <@&744476760485265479>`)));
 				} else {
 					return message.delete().then(message.channel.send('Invalid user'));
 				}
 			} else {
-				return message.delete().then(message.channel.send('You do not have the <@&744476760485265479> role to use this command.'));
+				return message.delete().then(message.channel.send('lul').then(msg => msg.edit('You do not have the <@&744476760485265479> role to use this command.')));
 			}
 		} else {
 			return message.delete().then(message.channel.send('This command is not available for this server.'));
