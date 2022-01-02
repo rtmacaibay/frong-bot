@@ -13,8 +13,7 @@ module.exports = {
 		let map = null;
 		if (mapExists) {
 			map = allReactionsMap.get(lastTwo.last());
-		}
-		else {
+		} else {
 			map = new Map();
 		}
 		let counter = 0;
@@ -24,11 +23,17 @@ module.exports = {
 					const c = args[i].toLowerCase().charAt(j);
 					if (map.get(c)) {
 						map.set(c, map.get(c) + 1);
-					}
-					else {
+					} else {
 						map.set(c, 1);
 					}
-					const letter = c + '_' + (map.get(c) - 1);
+					let letter;
+					if (c == '!') {
+						letter = 'exclamationmark_' + (map.get(c) - 1);
+					} else if (c == '?') {
+						letter = 'questionmark_' + (map.get(c) - 1);
+					} else {
+						letter = c + '_' + (map.get(c) - 1);
+					}
 					let server;
 					switch (map.get(c)) {
 					case 1:
@@ -54,8 +59,7 @@ module.exports = {
 				}
 			}
 			allReactionsMap.set(lastTwo.last(), map);
-		}
-		catch (e) {
+		} catch (e) {
 			console.log(e);
 		}
 	},
