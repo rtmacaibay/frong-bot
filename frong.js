@@ -88,16 +88,14 @@ client.on('messageCreate', message => {
 			const timeLeft = (expirationTime - now) / 1000;
 			return message.reply(`pleast wait ${timeLeft.toFixed(1)} more second(s) before reusing the '${commandName}' command.`);
 		}
-	}
-	else {
+	} else {
 		timestamps.set(message.author.id, now);
 		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 	}
 
 	try {
 		command.execute(message, args);
-	}
-	catch (error) {
+	} catch (error) {
 		console.error(error);
 		message.reply('We don\'t got the brain cells for that command.');
 	}
@@ -117,8 +115,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 				newMember.setMute(true)
 					.then(console.log(`Muted user ${newMember.member.user.username}`));
 				return;
-			}
-			else if (targetLib.includes(leftChannel) && !targetLib.includes(joinedChannel) && joinedChannel !== null) {
+			} else if (targetLib.includes(leftChannel) && !targetLib.includes(joinedChannel) && joinedChannel !== null) {
 				newMember.setMute(false)
 					.then(console.log(`Unmuted user ${newMember.member.user.username}`));
 				return;
@@ -131,8 +128,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
                  }
             */
 		}
-	}
-	catch (error) {
+	} catch (error) {
 		console.error(error);
 	}
 });

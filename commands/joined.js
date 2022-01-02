@@ -9,15 +9,13 @@ module.exports = {
 			const author = message.author;
 			const joinedDate = message.member.joinedAt.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
 			return message.delete().then(message.channel.send(`${author} joined: ${joinedDate} PST`));
-		}
-		else {
+		} else {
 			const user = message.mentions.users.first();
 			const member = message.mentions.members.first();
 			if (member != null && user != null) {
 				const joinedDate = member.joinedAt.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
 				return message.delete().then(message.channel.send(`${user} joined: ${joinedDate} PST`));
-			}
-			else {
+			} else {
 				return message.delete().then(message.channel.send('Invalid user'));
 			}
 		}

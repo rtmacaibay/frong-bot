@@ -9,8 +9,7 @@ module.exports = {
 			const lastTwo = await message.channel.messages.fetch({ limit: 2 });
 			const user = lastTwo.last().author;
 			output = `ATTN: ${message.author} is simping for ${user}!`;
-		}
-		else {
+		} else {
 			const target = args.join(' ');
 			output = `ATTN: ${message.author} is simping for ${target}!`;
 		}
