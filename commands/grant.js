@@ -8,7 +8,7 @@ module.exports = {
 		if (message.guildId == 744451939848159342) {
 			if (!args.length) {
 				return message.delete().then(message.channel.send(`Please specify the user you want to grant the regular member role to. (e.g. ${message.client.prefix}g <@910350990304231445>`));
-			} else if (message.member.roles.cache.has('744476760485265479')) {
+			} else if (message.member.roles.cache.some(role => role.id == 744476760485265479)) {
 				const user = message.mentions.users.first();
 				const member = message.mentions.members.first();
 				if (member != null && user != null) {
