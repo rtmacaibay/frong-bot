@@ -3,22 +3,23 @@ module.exports = {
 	description: 'Grants a user the server specified role',
 	aliases: ['g'],
 	args: true,
-	usage: '<@ a user to grant their role',
-	execute(message, args) {
-		if (message.guildId == 744451939848159342) {
-			if (!args.length) {
-				return message.delete().then(message.channel.send(`Please specify the user you want to grant the regular member role to. (e.g. ${message.client.prefix}g <@910350990304231445>`));
-			} else if (message.member.roles.cache.some(role => role.id == 744476760485265479)) {
+	usage: '<@ a user to grant their role>',
+	execute(message) {
+		const mainServerID = '744451939848159342';
+		const mainRoleID = '744476760485265479';
+
+		if (message.guildId == mainServerID) {
+			if (message.member.roles.cache.some(role => role.id == mainRoleID)) {
 				const user = message.mentions.users.first();
 				const member = message.mentions.members.first();
-				if (member != null && user != null) {
-					member.roles.add('744476760485265479');
-					return message.delete().then(message.channel.send('lul').then(msg => msg.edit(`${user} now has the <@&744476760485265479>`)));
+				if (member != null && user != null && !member.roles.cache.some(role => role.id == mainRoleID)) {
+					member.roles.add(`${mainRoleID}`);
+					return message.delete().then(message.channel.send({ content: `${user} now has the <@&${mainRoleID}>`, allowedMentions: { parse: [] } }));
 				} else {
-					return message.delete().then(message.channel.send('Invalid user'));
+					return message.delete().then(message.channel.send('Invalid user specified or user already has role c:'));
 				}
 			} else {
-				return message.delete().then(message.channel.send('lul').then(msg => msg.edit('You do not have the <@&744476760485265479> role to use this command.')));
+				return message.delete().then(message.channel.send({ content: `You do not have the <@&${mainRoleID}> role to use this command.`, allowedMentions: { parse: [] } }));
 			}
 		} else {
 			return message.delete().then(message.channel.send('This command is not available for this server.'));
