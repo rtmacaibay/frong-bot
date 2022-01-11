@@ -49,6 +49,10 @@ client.once('ready', () => {
 client.on('messageCreate', message => {
 	const msg = message.content;
 
+	if (message.channel.id == 744461168395026493 && !msg.startsWith(prefix)) {
+		message.delete('This is the welcome channel idiot.');
+	}
+
 	if (((msg.toLowerCase().includes('bobert') || msg.toLowerCase().includes('robert')) && msg.toLowerCase().includes('simp')) && !message.author.bot) {
 		const name = msg.toLowerCase().includes('bobert') ? 'Bobert' : 'Robert';
 		message.channel.send(`Thing about ${name} is he doesn't simp. In fact, he never simps.`);
@@ -72,7 +76,14 @@ client.on('messageCreate', message => {
 			reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
 		}
 
-		return message.channel.send(reply);
+		return message.delete()
+			.then((replyMsg) =>
+				replyMsg.send(reply)
+					.then((m) =>
+						setTimeout(function() {
+							m.delete();
+						}, 3000),
+					));
 	}
 
 	if (!cooldowns.has(commandName)) cooldowns.set(commandName, new Discord.Collection());
