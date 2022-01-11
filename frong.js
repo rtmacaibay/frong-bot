@@ -49,7 +49,7 @@ client.once('ready', () => {
 client.on('messageCreate', message => {
 	const msg = message.content;
 
-	if (message.channel.id == 744461168395026493 && !msg.startsWith(prefix) && !message.author.bot) {
+	if (message.channel.id == 744461168395026493 && (!msg.startsWith(prefix + 'g') || !msg.startsWith(prefix + 'grant')) && !message.author.bot) {
 		message.delete('This is the welcome channel idiot.');
 	}
 
