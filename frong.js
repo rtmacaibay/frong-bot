@@ -46,8 +46,28 @@ client.once('ready', () => {
 	console.log('Activity set!');
 });
 
-client.on('messageCreate', message => {
+client.on('messageCreate', async message => {
 	const msg = message.content;
+
+	// check if server is in database
+	if (message.guild && !message.author.bot && msg.startsWith(prefix)) {
+		await client.pool.query(`
+			INSERT INTO servers
+				(server_name, server_id)
+			VALUES ($1, $2)
+			ON CONFLICT (server_id)
+			DO NOTHING
+		;`,
+		[message.guild.name, message.guild.id],
+		(err, res) => {
+			if (err) {
+				console.log('Error - Failed to insert server into servers');
+				console.log(err);
+			} else {
+				console.log(`Server rows added: ${res.rowCount}`);
+			}
+		});
+	}
 
 	if (message.channel.id == 744461168395026493 && (!msg.startsWith(prefix + 'g') || !msg.startsWith(prefix + 'grant')) && !message.author.bot) {
 		message.delete('This is the welcome channel idiot.');
@@ -78,7 +98,7 @@ client.on('messageCreate', message => {
 
 		return message.delete()
 			.then((replyMsg) =>
-				replyMsg.send(reply)
+				replyMsg.channel.send(reply)
 					.then((m) =>
 						setTimeout(function() {
 							m.delete();

@@ -6,16 +6,16 @@ module.exports = {
 	aliases: ['commands'],
 	usage: '<command name>',
 	execute(message, args) {
-		const data = [];
+		let data = '';
 		const { commands } = message.client;
 		const prefix = config.prefix;
 
 		if (!args.length) {
-			data.push('Here\'s a list of all my commands:');
-			data.push(commands.map(command => command.name).join(', '));
-			data.push(`\nYou can send \`${prefix}help [command name]\` to get info on a specific command!`);
+			data = data.concat('Here\'s a list of all my commands:\n');
+			data = data.concat(commands.map(command => command.name).join(', '));
+			data = data.concat(`\nYou can send \`${prefix}help [command name]\` to get info on a specific command!`);
 
-			return message.author.send(data, { split: true })
+			return message.author.send(data)
 				.then(() => {
 					if (message.channel.type === 'dm') return;
 					message.reply('I\'ve sent you a DM with all my commands!')
@@ -41,13 +41,13 @@ module.exports = {
 			return message.reply('that\'s not a valid command!');
 		}
 
-		data.push(`**Name:** ${command.name}`);
+		data = data.concat(`**Name:** ${command.name}\n`);
 
-		if (command.aliases) data.push(`**Aliases:** ${command.aliases.join(', ')}`);
-		if (command.description) data.push(`**Description:** ${command.description}`);
-		if (command.usage) data.push(`**Usage:** ${prefix}${command.name} ${command.usage}`);
-		if (command.cooldown) data.push(`**Cooldown:** ${command.cooldown} second(s)`);
+		if (command.aliases) data = data.concat(`**Aliases:** ${command.aliases.join(', ')}\n`);
+		if (command.description) data = data.concat(`**Description:** ${command.description}\n`);
+		if (command.usage) data = data.concat(`**Usage:** ${prefix}${command.name} ${command.usage}\n`);
+		if (command.cooldown) data = data.concat(`**Cooldown:** ${command.cooldown} second(s)\n`);
 
-		message.delete().then(message.channel.send(data, { split: true }));
+		message.delete().then(message.channel.send(data));
 	},
 };

@@ -1,4 +1,5 @@
 const { Client, Collection, Intents } = require('discord.js');
+const { Pool } = require('pg');
 
 module.exports = class extends Client {
 	constructor(config) {
@@ -23,5 +24,12 @@ module.exports = class extends Client {
 		this.token = config.token;
 
 		this.prefix = config.prefix;
+
+		this.pool = new Pool({
+			connectionString: config.db,
+			ssl: {
+				rejectUnauthorized: false,
+			},
+		});
 	}
 };
