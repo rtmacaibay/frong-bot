@@ -13,7 +13,7 @@ module.exports = {
 		if (!args.length) {
 			data = data.concat('Here\'s a list of all my commands:\n');
 			data = data.concat(commands.map(command => command.name).join(', '));
-			data = data.concat(`\nYou can send \`${prefix}help [command name]\` to get info on a specific command!`);
+			data = data.concat(`\n\nYou can send \`${prefix}help [command name]\` to get info on a specific command!`);
 
 			return message.author.send(data)
 				.then(() => {
