@@ -69,7 +69,7 @@ client.on('messageCreate', async message => {
 		});
 	}
 
-	if (message.channel.id == 744461168395026493 && (!msg.startsWith(`${prefix}g`) || !msg.startsWith(`${prefix}grant`)) && !message.author.bot) {
+	if (message.channel.id == 744461168395026493 && (!msg.startsWith(`${prefix}g`) && !msg.startsWith(`${prefix}grant`)) && !message.author.bot) {
 		message.delete('This is the welcome channel idiot.');
 	}
 
