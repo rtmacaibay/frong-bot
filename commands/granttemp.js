@@ -15,7 +15,7 @@ module.exports = {
 				const member = message.mentions.members.first();
 				if (member != null && user != null && !member.roles.cache.some(role => role.id == mainRoleID)) {
 					member.roles.add(`${tempRoleID}`);
-					return message.delete().then(message.channel.send({ content: `${user} now has the <@&${mainRoleID}> role`, allowedMentions: { parse: [] } }));
+					return message.delete().then(message.channel.send({ content: `${user} now has the <@&${tempRoleID}> role`, allowedMentions: { parse: [] } }));
 				} else {
 					return message.delete().then(message.channel.send('Invalid user specified or user already has role c:'));
 				}
