@@ -13,7 +13,7 @@ module.exports = {
 			if (message.member.roles.cache.some(role => role.id == mainRoleID)) {
 				const user = message.mentions.users.first();
 				const member = message.mentions.members.first();
-				if (member != null && user != null && !member.roles.cache.some(role => role.id == mainRoleID)) {
+				if (member != null && user != null && !member.roles.cache.some(role => role.id == tempRoleID)) {
 					member.roles.add(`${tempRoleID}`);
 					return message.delete().then(message.channel.send({ content: `${user} now has the <@&${tempRoleID}> role`, allowedMentions: { parse: [] } }));
 				} else {
