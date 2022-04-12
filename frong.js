@@ -75,7 +75,7 @@ client.on('messageCreate', async message => {
 
 	if (((msg.toLowerCase().includes('bobert') || msg.toLowerCase().includes('robert')) && msg.toLowerCase().includes('simp')) && !message.author.bot) {
 		const name = msg.toLowerCase().includes('bobert') ? 'Bobert' : 'Robert';
-		message.channel.send(`Thing about ${name} is he doesn't simp. In fact, he never simps.`);
+		message.channel.send(`Thing about ${name} is he does simp. In fact, he rarely simps, but 1% simp is still a simp.`);
 	}
 	if (!msg.startsWith(prefix) || message.author.bot) {return;}
 
