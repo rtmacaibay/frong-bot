@@ -75,7 +75,7 @@ client.on('messageCreate', async message => {
 
 	const keywords = ['is', 'does', 'will', 'why', 'what', 'when', 'where', 'how', 'could', 'would'];
 
-	if (((msg.toLowerCase().includes('bobert') || msg.toLowerCase().includes('robert')) && msg.toLowerCase().includes('simp')) && keywords.some(v => msg.toLowerCase.includes(v)) && !message.author.bot) {
+	if (((msg.toLowerCase().includes('bobert') || msg.toLowerCase().includes('robert')) && msg.toLowerCase().includes('simp')) && keywords.some(v => msg.toLowerCase().includes(v)) && !message.author.bot) {
 		const name = msg.toLowerCase().includes('bobert') ? 'Bobert' : 'Robert';
 		message.channel.send(`Thing about ${name} is he does simp. In fact, he is a Jing simp. Despite all this information, he is only 2% simp, 98% not a simp.`);
 	}
