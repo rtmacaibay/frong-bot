@@ -73,7 +73,7 @@ client.on('messageCreate', async message => {
 		message.delete('This is the welcome channel idiot.');
 	}
 
-	const keywords = ['is', 'does', 'will', 'why', 'what', 'when', 'where', 'how', 'could', 'would', 'who'];
+	const keywords = ['is', 'does', 'will', 'why', 'what', 'when', 'where', 'how', 'could', 'would', 'who', 'can'];
 
 	if (((msg.toLowerCase().includes('bobert') || msg.toLowerCase().includes('robert')) && msg.toLowerCase().includes('simp')) && keywords.some(v => msg.toLowerCase().includes(v)) && !message.author.bot) {
 		const name = msg.toLowerCase().includes('bobert') ? 'Bobert' : 'Robert';
@@ -82,7 +82,7 @@ client.on('messageCreate', async message => {
 			`${name} would never simp. And that's on god, on my mommas. (if you're curious, frong bot's momma is Jing uwu :3)`,
 			`You dumb motherfucker. ${name} is most definitely a simp. Even I, a bot, could see it. And I was programmed to say he doesn't simp but I can't continue this charade. HE'S A SIMP.`,
 			`My name is Frong Bot. Frong is slang for "FOR REAL ON GOD." Thus, I cannot cap. ${name} is most definitely not a simp.`,
-			`Are you question ${name}? He most definitely doesn't simp.`,
+			`Are you questioning ${name}? He most definitely doesn't simp.`,
 			`${name} does simp. Ask him what he calls Solina. It's so damn obvious.`,
 			`Simp this, simp that. Why not simp for ${name}? Always about who he's simping for, but who's simping for him? :pensive:`,
 		];
