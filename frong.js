@@ -77,7 +77,16 @@ client.on('messageCreate', async message => {
 
 	if (((msg.toLowerCase().includes('bobert') || msg.toLowerCase().includes('robert')) && msg.toLowerCase().includes('simp')) && keywords.some(v => msg.toLowerCase().includes(v)) && !message.author.bot) {
 		const name = msg.toLowerCase().includes('bobert') ? 'Bobert' : 'Robert';
-		message.channel.send(`Thing about ${name} is he does simp. In fact, he is a Jing simp. Despite all this information, he is only 2% simp, 98% not a simp.`);
+		const responses = [
+			`Thing about ${name} is he does simp. In fact, he is a Jing simp. Despite all this information, he is only 2% simp, 98% not a simp.`,
+			`${name} would never simp. And that's on god, on my mommas. (if you're curious, frong bot's momma is Jing uwu :3)`,
+			`You dumb motherfucker. ${name} is most definitely a simp. Even I, a bot, could see it. And I was programmed to say he doesn't simp but I can't continue this charade. HE'S A SIMP.`,
+			`My name is Frong Bot. Frong is slang for "FOR REAL ON GOD." Thus, I cannot cap. ${name} is most definitely not a simp.`,
+			`Are you question ${name}? He most definitely doesn't simp.`,
+			`${name} does simp. Ask him what he calls Solina. It's so damn obvious.`,
+			`Simp this, simp that. Why not simp for ${name}? Always about who he's simping for, but who's simping for him? :pensive:`,
+		];
+		message.channel.send(responses[Math.floor(Math.random() * 7)]);
 	}
 	if (!msg.startsWith(prefix) || message.author.bot) {return;}
 
