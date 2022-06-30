@@ -73,7 +73,7 @@ client.on('messageCreate', async message => {
 		message.delete('This is the welcome channel idiot.');
 	}
 
-	const keywords = ['is', 'does', 'will', 'why', 'what', 'when', 'where', 'how', 'could', 'would'];
+	const keywords = ['is', 'does', 'will', 'why', 'what', 'when', 'where', 'how', 'could', 'would', 'who'];
 
 	if (((msg.toLowerCase().includes('bobert') || msg.toLowerCase().includes('robert')) && msg.toLowerCase().includes('simp')) && keywords.some(v => msg.toLowerCase().includes(v)) && !message.author.bot) {
 		const name = msg.toLowerCase().includes('bobert') ? 'Bobert' : 'Robert';
