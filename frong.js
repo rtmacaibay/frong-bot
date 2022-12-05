@@ -4,8 +4,6 @@ const Client = require('./client/client.js');
 const { config } = require('./config.js');
 
 const client = new Client(config);
-
-const prefix = client.prefix;
 const token = client.token;
 
 const mainCommands = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -39,7 +37,7 @@ const cooldowns = new Discord.Collection();
 
 client.once('ready', () => {
 	console.log('Ready!');
-	client.user.setActivity(`${prefix}help & appreciating Jonathan`, {
+	client.user.setActivity(`Glimpse of Us by Joji`, {
 		type: 'LISTENING',
 		url: 'https://github.com/rtmacaibay/frong-bot',
 	});
@@ -47,24 +45,41 @@ client.once('ready', () => {
 });
 
 client.on('messageCreate', async message => {
+	var prefix = client.prefix;
 	const msg = message.content;
 
 	// check if server is in database
-	if (message.guild && !message.author.bot && msg.startsWith(prefix)) {
+	if (message.guild && !message.author.bot) {
 		await client.pool.query(`
 			INSERT INTO servers
-				(server_name, server_id)
-			VALUES ($1, $2)
+				(server_name, server_id, prefix)
+			VALUES ($1, $2, $3)
 			ON CONFLICT (server_id)
 			DO NOTHING
 		;`,
-		[message.guild.name, message.guild.id],
+		[message.guild.name, message.guild.id, client.prefix],
 		(err, res) => {
 			if (err) {
 				console.log('Error - Failed to insert server into servers');
 				console.log(err);
 			} else {
 				console.log(`Server rows added: ${res.rowCount}`);
+			}
+		});
+	}
+
+	if (message.guild) {
+		await client.pool.query(`
+			SELECT prefix
+			FROM servers
+			WHERE server_id = $1
+		;`,
+		[message.guild.id],
+		(err, res) => {
+			if (err) {
+				console.log(err);
+			} else {
+				prefix = res.rows[0].prefix;
 			}
 		});
 	}
@@ -78,8 +93,8 @@ client.on('messageCreate', async message => {
 	if (((msg.toLowerCase().includes('bobert') || msg.toLowerCase().includes('robert')) && msg.toLowerCase().includes('simp')) && keywords.some(v => msg.toLowerCase().includes(v)) && !message.author.bot) {
 		const name = msg.toLowerCase().includes('bobert') ? 'Bobert' : 'Robert';
 		const responses = [
-			`Thing about ${name} is he does simp. In fact, he is a Jing simp. Despite all this information, he is only 2% simp, 98% not a simp.`,
-			`${name} would never simp. And that's on god, on my mommas. (if you're curious, frong bot's momma is Jing uwu :3)`,
+			`Thing about ${name} is he does simp. In fact, he is a Solina simp. Despite all this information, he is only 2% simp, 98% not a simp.`,
+			`${name} would never simp. And that's on god, on my mommas.`,
 			`You dumb motherfucker. ${name} is most definitely a simp. Even I, a bot, could see it. And I was programmed to say he doesn't simp but I can't continue this charade. HE'S A SIMP.`,
 			`My name is Frong Bot. Frong is slang for "FOR REAL ON GOD." Thus, I cannot cap. ${name} is most definitely not a simp.`,
 			`Are you questioning ${name}? He most definitely doesn't simp.`,
