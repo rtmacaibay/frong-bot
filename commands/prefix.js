@@ -41,7 +41,7 @@ module.exports = {
         });
 
         return message.delete().then((msg) => {
-            msg.send(`Prefix changed to ${args[0]} in this server`);
+            msg.channel.send(`Prefix changed to \`${args[0]}\` in this server`);
         });
 	},
 };

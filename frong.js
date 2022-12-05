@@ -45,8 +45,6 @@ client.once('ready', () => {
 });
 
 client.on('messageCreate', async message => {
-	var prefix = client.prefix;
-	const msg = message.content;
 
 	// check if server is in database
 	if (message.guild && !message.author.bot) {
@@ -78,12 +76,16 @@ client.on('messageCreate', async message => {
 		(err, res) => {
 			if (err) {
 				console.log(err);
+				InterpretMessage(message, client.prefix);
 			} else {
-				prefix = res.rows[0].prefix;
+				InterpretMessage(message, res.rows[0].prefix);
 			}
 		});
 	}
+});
 
+function InterpretMessage(message, prefix) {
+	const msg = message.content;
 	if (message.channel.id == 744461168395026493 && (!msg.startsWith(`${prefix}g`) && !msg.startsWith(`${prefix}grant`)) && !message.author.bot) {
 		message.delete('This is the welcome channel idiot.');
 	}
@@ -156,7 +158,7 @@ client.on('messageCreate', async message => {
 		console.error(error);
 		message.reply('We don\'t got the brain cells for that command.');
 	}
-});
+}
 
 client.on('voiceStateUpdate', (oldMember, newMember) => {
 	try {
