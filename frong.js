@@ -64,23 +64,20 @@ client.on('messageCreate', async message => {
 				if (res.rowCount > 0) {
 					console.log(`Server rows added: ${res.rowCount}`);
 				}
-			}
-		});
-	}
-
-	if (message.guild) {
-		await client.pool.query(`
-			SELECT prefix
-			FROM servers
-			WHERE server_id = $1
-		;`,
-		[message.guild.id],
-		(err, res) => {
-			if (err) {
-				console.log(err);
-				InterpretMessage(message, client.prefix);
-			} else {
-				InterpretMessage(message, res.rows[0].prefix);
+				client.pool.query(`
+					SELECT prefix
+					FROM servers
+					WHERE server_id = $1
+				;`,
+				[message.guild.id],
+				(err, res) => {
+					if (err) {
+						console.log(err);
+						InterpretMessage(message, client.prefix);
+					} else {
+						InterpretMessage(message, res.rows[0].prefix);
+					}
+				});
 			}
 		});
 	}
