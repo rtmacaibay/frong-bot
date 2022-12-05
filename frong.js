@@ -61,7 +61,9 @@ client.on('messageCreate', async message => {
 				console.log('Error - Failed to insert server into servers');
 				console.log(err);
 			} else {
-				console.log(`Server rows added: ${res.rowCount}`);
+				if (res.rowCount > 0) {
+					console.log(`Server rows added: ${res.rowCount}`);
+				}
 			}
 		});
 	}
