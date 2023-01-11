@@ -89,7 +89,7 @@ async function GatherPrefix(message) {
 
 function InterpretMessage(message, prefix) {
 	const msg = message.content;
-	if (message.channel.id == 744461168395026493 && (!msg.startsWith(`${prefix}g`) && !msg.startsWith(`${prefix}grant`)) && !message.author.bot) {
+	if (message.channel.id == 744461168395026493 && (!msg.startsWith(`${prefix}g`) && !msg.startsWith(`${prefix}grant`)) && !message.author.bot && !message.member.hasPermission('ADMINISTRATOR')) {
 		message.delete('This is the welcome channel idiot.');
 	}
 
