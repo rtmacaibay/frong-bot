@@ -89,7 +89,7 @@ async function GatherPrefix(message) {
 
 function InterpretMessage(message, prefix) {
 	const msg = message.content;
-	if (message.channel.id == 744461168395026493 && (!msg.startsWith(`${prefix}g`) && !msg.startsWith(`${prefix}grant`)) && !message.author.bot && !message.member.hasPermission('ADMINISTRATOR')) {
+	if (message.channel.id == 744461168395026493 && (!msg.startsWith(`${prefix}g`) && !msg.startsWith(`${prefix}grant`)) && !message.author.bot && !message.member.permissions.has('ADMINISTRATOR')) {
 		console.log(`[${message.author.username}]: ${message.content}`);
 		message.delete('This is the welcome channel idiot.');
 	}
@@ -144,7 +144,7 @@ function InterpretMessage(message, prefix) {
 	const timestamps = cooldowns.get(commandName);
 	const cooldownAmount = (command.cooldown || 0.5) * 1000;
 
-	if (timestamps.has(message.author.id) && !message.member.hasPermission('ADMINISTRATOR')) {
+	if (timestamps.has(message.author.id) && !message.member.permissions.has('ADMINISTRATOR')) {
 		const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
 
 		if (now < expirationTime) {

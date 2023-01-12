@@ -12,7 +12,7 @@ module.exports = {
 					const libraries = message.client.libraries;
 					const user = message.member;
 
-					if (user.hasPermission('MANAGE_CHANNELS', true, true)) {
+					if (user.permissions.has('MANAGE_CHANNELS', true, true)) {
 						if (!user.voice.channel) {
 							message.reply('User must be in a voice channel to use this command.')
 								.then(msg => {
