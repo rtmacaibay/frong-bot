@@ -155,7 +155,7 @@ function ExtractURLs(message) {
 	if (tiktok_urls == null) {
 		tiktok_urls = message.match(/https:\/\/(vx)?tiktok\.com\/@[\w.]?\/video\/[\d]+\/?/);
 		if (tiktok_urls != null) {
-			let username = ProcessIncorrectTiktokURL(tiktok_urls[0]);
+			let username = ProcessTiktokUsername(tiktok_urls[0]);
 			if (username != "") {
 				tiktok_urls = [tiktok_urls[0].replace("@", `@${username}`)];
 			} else {
@@ -171,36 +171,40 @@ function ExtractURLs(message) {
 }
 
 function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, reddit_urls) {
-	let seen_urls = new Map();
+	let seen = tiktok_urls != null || instagram_urls != null || twitter_urls != null || reddit_urls != null;
 	if (tiktok_urls != null) {
-		tiktok_urls.forEach(async url => {
-			if (url == undefined) {
+		let url = tiktok_urls[0];
+		let username = ProcessTiktokUsername(url);
+		Quickvids(url.replace("https://vxtiktok.com/", "https://tiktok.com/")).then(async (quickvids_url) => {
+			if (quickvids_url == undefined) {
 				return;
 			}
-			if (seen_urls.get(url) != undefined) {
-				return;
+			let {carouselArr, description } = await IsCarousel(quickvids_url)
+			if (carouselArr.length > 0) {
+				let embeds = [new Discord.EmbedBuilder().setURL(quickvids_url).setImage(carouselArr[0]).setTitle(description)];
+				for (let i = 1; i < carouselArr.length; i++) {
+					embeds.push(new Discord.EmbedBuilder().setURL(quickvids_url).setImage(carouselArr[i]));
+				}
+				message.channel.send({content: `<@${message.author.id}> | [@${username} | QuickVids.win](${quickvids_url})`, embeds: embeds });
+			} else {
+				message.channel.send(`<@${message.author.id}> | [@${username} | QuickVids.win](${quickvids_url})`);
 			}
-			Quickvids(url.replace("https://vxtiktok.com/", "https://tiktok.com/")).then(async (quickvids_url) => {
-				if (quickvids_url == undefined) {
-					return;
-				}
-				let {carouselArr, description } = await IsCarousel(quickvids_url)
-				if (carouselArr.length > 0) {
-					let embeds = [new Discord.EmbedBuilder().setURL(quickvids_url).setImage(carouselArr[0]).setTitle(description)];
-					for (let i = 1; i < carouselArr.length; i++) {
-						embeds.push(new Discord.EmbedBuilder().setURL(quickvids_url).setImage(carouselArr[i]));
-					}
-					message.channel.send({content: `<@${message.author.id}> | [QuickVids.win](${quickvids_url})`, embeds: embeds });
-				} else {
-					message.channel.send(`<@${message.author.id}> | [QuickVids.win](${quickvids_url})`);
-				}
-			});
-			seen_urls.set(url, true);
 		});
+	} else if (instagram_urls != null) {
+		let url = instagram_urls[0];
+		if (url.includes("reel")) {
+			message.channel.send(`<@${message.author.id}> | [instagramez](${url.replace("https://instagram.com/", "https://www.instagramez.com/")})`);
+		} else {
+			message.channel.send(`<@${message.author.id}> | [ddinstagram](${url.replace("https://instagram.com/", "https://ddinstagram.com/")})`);
+		}
+	} else if (twitter_urls != null) {
+		let url = twitter_urls[0];
+		message.channel.send(`<@${message.author.id}> | [vxtwitter](${url.replace("https://twitter.com/", "https://vxtwitter.com/")})`);
+	} else if (reddit_urls != null) {
+		let url = reddit_urls[0];
+		message.channel.send(`<@${message.author.id}> | [rxddit](${url.replace("reddit.com/", "rxddit.com/").replace("redd.it/", "rxddit.com/")})`);
 	}
-	if (seen_urls.size > 0) {
-		message.delete();
-	}
+	if (seen) { message.delete(); }
 }
 
 async function Quickvids(tiktok_url) {
@@ -262,7 +266,7 @@ async function IsCarousel(quickvids_url) {
 	});
 }
 
-function ProcessIncorrectTiktokURL(tiktok_url) {
+function ProcessTiktokUsername(tiktok_url) {
 	try {
 		fetch(tiktok_url, {
 			method: "GET",
