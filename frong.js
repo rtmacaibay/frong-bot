@@ -2,6 +2,7 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const Client = require('./client/client.js');
 const { config } = require('./config.js');
+const fetch = require('node-fetch');
 
 const client = new Client(config);
 const token = client.token;
@@ -44,71 +45,56 @@ client.once('ready', () => {
 	console.log('Activity set!');
 });
 
-client.on('messageCreate', async message => {
-
+client.on(Discord.Events.MessageCreate, async message => {
 	// check if server is in database
 	if (message.guild && !message.author.bot) {
 		await client.pool.query(`
-			INSERT INTO servers
-				(server_name, server_id, prefix)
-			VALUES ($1, $2, $3)
-			ON CONFLICT (server_id)
-			DO NOTHING
+			SELECT prefix
+			FROM servers
+			WHERE server_id = $1
 		;`,
-		[message.guild.name, message.guild.id, client.prefix],
-		(err, res) => {
+		[message.guild.id],
+		async (err, res) => {
 			if (err) {
-				console.log('Error - Failed to insert server into servers');
-				console.log(err);
+				await client.pool.query(`
+					INSERT INTO servers
+						(server_name, server_id, prefix)
+					VALUES ($1, $2, $3)
+					ON CONFLICT (server_id)
+					DO NOTHING
+				;`,
+				[message.guild.name, message.guild.id, client.prefix],
+				(err, res) => {
+					if (err) {
+						console.log('Error - Failed to insert server into servers');
+						console.log(err);
+					} else {
+						if (res.rowCount > 0) {
+							console.log(`Server rows added: ${res.rowCount}`);
+						}
+						GatherPrefix(message);
+					}
+				});
 			} else {
-				if (res.rowCount > 0) {
-					console.log(`Server rows added: ${res.rowCount}`);
-				}
-				GatherPrefix(message);
+				InterpretMessage(message, res.rows[0].prefix);
 			}
 		});
 	}
 });
 
-async function GatherPrefix(message) {
-	await client.pool.query(`
-		SELECT prefix
-		FROM servers
-		WHERE server_id = $1
-	;`,
-	[message.guild.id],
-	(err, res) => {
-		if (err) {
-			console.log(err);
-			InterpretMessage(message, client.prefix);
-		} else {
-			InterpretMessage(message, res.rows[0].prefix);
-		}
-	});
-}
-
 function InterpretMessage(message, prefix) {
 	const msg = message.content;
+	if (msg.length > 400) {return;}
+
 	if (message.channel.id == 744461168395026493 && (!msg.startsWith(`${prefix}g`) && !msg.startsWith(`${prefix}grant`)) && !message.author.bot && !message.member.permissions.has('ADMINISTRATOR')) {
 		console.log(`[${message.author.username}]: ${message.content}`);
 		message.delete('This is the welcome channel idiot.');
 	}
 
-	const keywords = ['is', 'does', 'will', 'why', 'what', 'when', 'where', 'how', 'could', 'would', 'who', 'can'];
+	let { tiktok_urls, instagram_urls, twitter_urls, reddit_urls } = ExtractURLs(msg.replace("https://www.", "https://"));
 
-	if (((msg.toLowerCase().includes('bobert') || msg.toLowerCase().includes('robert')) && msg.toLowerCase().includes('simp')) && keywords.some(v => msg.toLowerCase().includes(v)) && !message.author.bot) {
-		const name = msg.toLowerCase().includes('bobert') ? 'Bobert' : 'Robert';
-		const responses = [
-			`Thing about ${name} is he does simp. In fact, he is a Solina simp. Despite all this information, he is only 2% simp, 98% not a simp.`,
-			`${name} would never simp. And that's on god, on my mommas.`,
-			`You dumb motherfucker. ${name} is most definitely a simp. Even I, a bot, could see it. And I was programmed to say he doesn't simp but I can't continue this charade. HE'S A SIMP.`,
-			`My name is Frong Bot. Frong is slang for "FOR REAL ON GOD." Thus, I cannot cap. ${name} is most definitely not a simp.`,
-			`Are you questioning ${name}? He most definitely doesn't simp.`,
-			`${name} does simp. Ask him what he calls Solina. It's so damn obvious.`,
-			`Simp this, simp that. Why not simp for ${name}? Always about who he's simping for, but who's simping for him? :pensive:`,
-		];
-		message.channel.send(responses[Math.floor(Math.random() * 7)]);
-	}
+	ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, reddit_urls)
+
 	if (!msg.startsWith(prefix) || message.author.bot) {return;}
 
 	console.log(`[${message.author.username}]: ${message.content}`);
@@ -161,6 +147,141 @@ function InterpretMessage(message, prefix) {
 	} catch (error) {
 		console.error(error);
 		message.reply('We don\'t got the brain cells for that command.');
+	}
+}
+
+function ExtractURLs(message) {
+	tiktok_urls = message.match(/(https:\/\/(www\.)?(vt|vm)\.tiktok\.com\/[A-Za-z0-9]+|https:\/\/(vx)?tiktok\.com\/@[\w.]+\/video\/[\d]+\/?|https:\/\/(vx)?tiktok\.com\/t\/[a-zA-Z0-9]+\/?)/);
+	if (tiktok_urls == null) {
+		tiktok_urls = message.match(/https:\/\/(vx)?tiktok\.com\/@[\w.]?\/video\/[\d]+\/?/);
+		if (tiktok_urls != null) {
+			let username = ProcessIncorrectTiktokURL(tiktok_urls[0]);
+			if (username != "") {
+				tiktok_urls = [tiktok_urls[0].replace("@", `@${username}`)];
+			} else {
+				tiktok_urls = null;
+			}
+		}
+	}
+	instagram_urls = message.match(/(https:\/\/(www.)?instagram\.com\/(?:p|reel)\/([^/?#&]+))/);
+    twitter_urls = message.replace("https://x.com/", "https://twitter.com/").match(/(https:\/\/(www.)?(twitter|x)\.com\/[a-zA-Z0-9_]+\/status\/[0-9]+)/);
+    reddit_urls = message.match(/(https?:\/\/(?:www\.)?(?:old\.)?reddit\.com\/r\/[A-Za-z0-9_]+\/(?:comments|s)\/[A-Za-z0-9_]+(?:\/[^\/ ]+)?(?:\/\w+)?)|(https?:\/\/(?:www\.)?redd\.it\/[A-Za-z0-9]+)/);
+
+    return { tiktok_urls, instagram_urls, twitter_urls, reddit_urls };
+}
+
+function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, reddit_urls) {
+	let seen_urls = new Map();
+	if (tiktok_urls != null) {
+		tiktok_urls.forEach(async url => {
+			if (url == undefined) {
+				return;
+			}
+			if (seen_urls.get(url) != undefined) {
+				return;
+			}
+			Quickvids(url.replace("https://vxtiktok.com/", "https://tiktok.com/")).then(async (quickvids_url) => {
+				if (quickvids_url == undefined) {
+					return;
+				}
+				let {carouselArr, description } = await IsCarousel(quickvids_url)
+				if (carouselArr.length > 0) {
+					let embeds = [new Discord.EmbedBuilder().setURL(quickvids_url).setImage(carouselArr[0]).setTitle(description)];
+					for (let i = 1; i < carouselArr.length; i++) {
+						embeds.push(new Discord.EmbedBuilder().setURL(quickvids_url).setImage(carouselArr[i]));
+					}
+					message.channel.send({content: `<@${message.author.id}> | [QuickVids.win](${quickvids_url})`, embeds: embeds });
+				} else {
+					message.channel.send(`<@${message.author.id}> | [QuickVids.win](${quickvids_url})`);
+				}
+			});
+			seen_urls.set(url, true);
+		});
+	}
+	if (seen_urls.size > 0) {
+		message.delete();
+	}
+}
+
+async function Quickvids(tiktok_url) {
+	return new Promise(function(resolve, reject) {
+		try {
+			fetch("https://api.quickvids.win/v1/shorturl/create", {
+				method: "POST",
+				body: JSON.stringify({
+					"input_text": tiktok_url,
+				}),
+				headers: {
+					"content-type": "application/json",
+					"user-agent": "Frong Bot - macaibay.com",
+				}
+			}).then(async (response) => {
+				if (response.status == 200) {
+					let resp = await response.json();
+					resolve(resp['quickvids_url']);
+				} else {
+					resolve(undefined);
+				}
+			});
+		} catch (error) {
+			console.error(error);
+			error = reject;
+		}
+	});
+}
+
+async function IsCarousel(quickvids_url) {
+	return new Promise(function(resolve, reject) {
+		try {
+			fetch(quickvids_url, {
+				method: "GET",
+				headers: {
+					"content-type": "application/json",
+					"user-agent": "Frong Bot - macaibay.com",
+				}
+			}).then(async (response) => {
+				if (response.status == 200) {
+					let resp = await response.text();
+					if (resp.includes(">Download All Images</button>")) {
+						let data = resp.substring(resp.indexOf("[", resp.indexOf("images:[", resp.indexOf("const data ="))), resp.indexOf("],", resp.indexOf("images:[", resp.indexOf("const data ="))) + 1);
+						let output = await JSON.parse(data);
+						let carouselArr = output.slice(0, 4);
+						let description = resp.substring(resp.indexOf("\"", resp.indexOf("description:\"", resp.indexOf("const data ="))), resp.indexOf("\",", resp.indexOf("description:\"", resp.indexOf("const data ="))) + 1);
+						resolve({ carouselArr, description });
+					} else {
+						let carouselArr = [];
+						let description = "";
+						resolve({ carouselArr, description });
+					}
+				}
+			});
+		} catch (error) {
+			console.error(error);
+			error = reject;
+		}
+	});
+}
+
+function ProcessIncorrectTiktokURL(tiktok_url) {
+	try {
+		fetch(tiktok_url, {
+			method: "GET",
+			headers: {
+				"content-type": "application/json",
+				"user-agent": "Frong Bot - macaibay.com",
+			}
+		}).then(async (response) => {
+			if (response.status == 200) {
+				let resp = await response.text();
+				let username = resp.substring(resp.indexOf("\"", resp.indexOf("\"uniqueId\":\"")) + 1, resp.indexOf("\",", resp.indexOf("\"uniqueId\":\"")));
+				return username;
+			} else {
+				return "";
+			}
+		});
+	} catch (error) {
+		console.error(error);
+		error = reject;
 	}
 }
 

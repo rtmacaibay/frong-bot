@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
 	name: 'serverinfo',
@@ -12,7 +12,7 @@ module.exports = {
 		const emojis = await message.guild.emojis.fetch();
 		const owner = await message.guild.fetchOwner();
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setTitle(`**${message.guild.name}**`)
 			.setDescription('**Server Info**')
 			.setColor('BLACK')

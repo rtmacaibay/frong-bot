@@ -4,8 +4,8 @@
   "description": "",
   "main": "frong.js",
   "engines": {
-    "node": "17.x",
-    "npm": "8.3.0"
+    "node": "18.x",
+    "npm": "^9.5.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -15,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^13.3.1",
+    "discord.js": "^14.14.1",
     "dotenv": "^8.6.0",
     "eslint": "^6.8.0",
     "node-fetch": "^2.6.6",
