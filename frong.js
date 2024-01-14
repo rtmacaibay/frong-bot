@@ -174,11 +174,11 @@ function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, reddit_
 	let seen = tiktok_urls != null || instagram_urls != null || twitter_urls != null || reddit_urls != null;
 	if (tiktok_urls != null) {
 		let url = tiktok_urls[0];
-		let username = ProcessTiktokUsername(url);
 		Quickvids(url.replace("https://vxtiktok.com/", "https://tiktok.com/")).then(async (quickvids_url) => {
 			if (quickvids_url == undefined) {
 				return;
 			}
+			let username = await ProcessTiktokUsername(url);
 			let {carouselArr, description } = await IsCarousel(quickvids_url)
 			if (carouselArr.length > 0) {
 				let embeds = [new Discord.EmbedBuilder().setURL(quickvids_url).setImage(carouselArr[0]).setTitle(description)];
@@ -187,7 +187,7 @@ function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, reddit_
 				}
 				message.channel.send({content: `<@${message.author.id}> | [@${username} | QuickVids.win](${quickvids_url})`, embeds: embeds });
 			} else {
-				message.channel.send(`<@${message.author.id}> | [@${username} | QuickVids.win](${quickvids_url})`);
+				message.channel.send(`<@${message.author.id}> | [@${username} | QuickVids.win](${quickvids_url}) | ${description}`);
 			}
 		});
 	} else if (instagram_urls != null) {
@@ -254,7 +254,7 @@ async function IsCarousel(quickvids_url) {
 						resolve({ carouselArr, description });
 					} else {
 						let carouselArr = [];
-						let description = "";
+						let description = resp.substring(resp.indexOf("\"", resp.indexOf("description:\"", resp.indexOf("const data ="))), resp.indexOf("\",", resp.indexOf("description:\"", resp.indexOf("const data ="))) + 1);
 						resolve({ carouselArr, description });
 					}
 				}
@@ -266,27 +266,29 @@ async function IsCarousel(quickvids_url) {
 	});
 }
 
-function ProcessTiktokUsername(tiktok_url) {
-	try {
-		fetch(tiktok_url, {
-			method: "GET",
-			headers: {
-				"content-type": "application/json",
-				"user-agent": "Frong Bot - macaibay.com",
-			}
-		}).then(async (response) => {
-			if (response.status == 200) {
-				let resp = await response.text();
-				let username = resp.substring(resp.indexOf("\"", resp.indexOf("\"uniqueId\":\"")) + 1, resp.indexOf("\",", resp.indexOf("\"uniqueId\":\"")));
-				return username;
-			} else {
-				return "";
-			}
-		});
-	} catch (error) {
-		console.error(error);
-		error = reject;
-	}
+async function ProcessTiktokUsername(tiktok_url) {
+	return new Promise(function(resolve, reject) {
+		try {
+			fetch(tiktok_url, {
+				method: "GET",
+				headers: {
+					"content-type": "application/json",
+					"user-agent": "Frong Bot - macaibay.com",
+				}
+			}).then(async (response) => {
+				if (response.status == 200) {
+					let resp = await response.text();
+					let username = resp.substring(resp.indexOf("\"", resp.indexOf(":", resp.indexOf("\"uniqueId\":\""))) + 1, resp.indexOf("\",", resp.indexOf("\"uniqueId\":\"")));
+					resolve(username);
+				} else {
+					resolve("");
+				}
+			});
+		} catch (error) {
+			console.error(error);
+			error = reject;
+		}
+	})
 }
 
 client.on('voiceStateUpdate', (oldMember, newMember) => {
