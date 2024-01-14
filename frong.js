@@ -254,9 +254,10 @@ async function IsCarousel(quickvids_url) {
 						resolve({ carouselArr, description });
 					} else {
 						let carouselArr = [];
-						let description = resp.substring(resp.indexOf("\"", resp.indexOf("description:\"", resp.indexOf("const data ="))) + 1, resp.indexOf("\",", resp.indexOf("description:\"", resp.indexOf("const data ="))));
+						let description = resp.substring(resp.indexOf("\"", resp.indexOf("description:\"", resp.indexOf("const data ="))), resp.indexOf("\",", resp.indexOf("description:\"", resp.indexOf("const data ="))));
 						if (description.includes("#")) {
 							description = description.substring(0, description.indexOf("#"));
+							description = description + "\"";
 						}
 						resolve({ carouselArr, description });
 					}
