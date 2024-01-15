@@ -163,9 +163,9 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 				for (let i = 1; i < carouselArr.length; i++) {
 					embeds.push(new Discord.EmbedBuilder().setURL(quickvids_url).setImage(carouselArr[i]));
 				}
-				message.channel.send({content: `<@${message.author.id}> | [@${username} | QuickVids.win](${quickvids_url})`, embeds: embeds });
+				message.channel.send({ content: `<@${message.author.id}> | [@${username} | QuickVids.win](${quickvids_url})`, embeds: embeds, allowedMentions: { parse: [] }});
 			} else {
-				message.channel.send(`<@${message.author.id}> | [@${username} | QuickVids.win](${quickvids_url}) | ${description}`);
+				message.channel.send({ content: `<@${message.author.id}> | [@${username} | QuickVids.win](${quickvids_url}) | ${description}`, allowedMentions: { parse: [] }});
 			}
 		});
 	} else if (instagram_urls != null) {
