@@ -1,6 +1,6 @@
-const plural = require('pluralize');
+import plural from 'pluralize';
 
-module.exports = {
+export const Cancel = {
 	name: 'cancel',
 	description: 'Cancels anything you ask it to cancel',
 	aliases: ['c'],

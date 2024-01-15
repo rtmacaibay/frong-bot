@@ -1,4 +1,4 @@
-module.exports = {
+export const Prefix = {
 	name: 'prefix',
 	description: 'Sets a prefix for the current server - case sensitive',
 	aliases: ['p'],

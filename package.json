@@ -7,6 +7,7 @@
     "node": "18.x",
     "npm": "^9.5.1"
   },
+  "type": "module",
   "scripts": {
     "test": "jest --passWithNoTests",
     "start": "node frong.js"
@@ -18,7 +19,7 @@
     "discord.js": "^14.14.1",
     "dotenv": "^16.3.1",
     "eslint": "^8.56.0",
-    "node-fetch": "^2.6.6",
+    "node-fetch": "^3.3.2",
     "pg": "^8.7.1",
     "pluralize": "^8.0.0"
   },

@@ -1,6 +1,6 @@
-const { config } = require('../config.js');
+import { config } from '../config.js';
 
-module.exports = {
+export const Help = {
 	name: 'help',
 	description: 'List all of my commands or info about a specific command.',
 	aliases: ['commands'],

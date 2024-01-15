@@ -1,4 +1,4 @@
-module.exports = {
+export const Grant = {
 	name: 'grant',
 	description: 'Grants a user the server specified role',
 	aliases: ['g'],

@@ -1,4 +1,4 @@
-module.exports = {
+export const RollMovie = {
 	name: 'rollmovie',
 	description: 'Rolls a movie',
 	aliases: ['rollm'],

@@ -1,4 +1,4 @@
-module.exports = {
+export const ReactMessage = {
 	name: 'reactmessage',
 	description: 'Reacts to a message with a message',
 	cooldown: 3,

@@ -1,6 +1,6 @@
-const plural = require('pluralize');
+import plural from 'pluralize';
 
-module.exports = {
+export const CancelStats = {
 	name: 'cancelstats',
 	description: 'Tells you the \'cancel\' stats of a particular query',
 	aliases: ['cs'],

@@ -1,4 +1,4 @@
-module.exports = {
+export const Watch = {
 	name: 'watch',
 	description: 'Watches a channel and mutes any user that enters / unmutes any user that leaves',
 	cooldown: 10,

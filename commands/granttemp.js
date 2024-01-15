@@ -1,4 +1,4 @@
-module.exports = {
+export const GrantTemp = {
 	name: 'granttemp',
 	description: 'Grants a user the server specified temp role',
 	aliases: ['gt'],

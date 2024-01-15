@@ -1,6 +1,6 @@
-const { EmbedBuilder } = require('discord.js');
+import { EmbedBuilder } from 'discord.js';
 
-module.exports = {
+export const ServerInfo = {
 	name: 'serverinfo',
 	description: 'Displays when you joined the server',
 	aliases: ['si'],
