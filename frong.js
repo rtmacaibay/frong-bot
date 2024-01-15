@@ -163,24 +163,24 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 				for (let i = 1; i < carouselArr.length; i++) {
 					embeds.push(new Discord.EmbedBuilder().setURL(quickvids_url).setImage(carouselArr[i]));
 				}
-				message.channel.send({content: `<@${message.author.id}> | [@${username} | QuickVids.win](${quickvids_url})`, embeds: embeds });
+				message.channel.send({ content: `<@${message.author.id}> | [@${username} | QuickVids.win](${quickvids_url})`, embeds: embeds, allowedMentions: { parse: [] }});
 			} else {
-				message.channel.send(`<@${message.author.id}> | [@${username} | QuickVids.win](${quickvids_url}) | ${description}`);
+				message.channel.send({ content: `<@${message.author.id}> | [@${username} | QuickVids.win](${quickvids_url}) | ${description}`, allowedMentions: { parse: [] }});
 			}
 		});
 	} else if (instagram_urls != null) {
 		let url = instagram_urls[0];
-		message.channel.send(`<@${message.author.id}> | [ddinstagram](${url.replace("https://instagram.com/", "https://ddinstagram.com/")})`);
+		message.channel.send({ content: `<@${message.author.id}> | [ddinstagram](${url.replace("https://instagram.com/", "https://ddinstagram.com/")})`, allowedMentions: { parse: [] }});
 	} else if (twitter_urls != null) {
 		let url = twitter_urls[0];
-		message.channel.send(`<@${message.author.id}> | [vxtwitter](${url.replace("https://twitter.com/", "https://vxtwitter.com/")})`);
+		message.channel.send({ content: `<@${message.author.id}> | [vxtwitter](${url.replace("https://twitter.com/", "https://vxtwitter.com/")})`, allowedMentions: { parse: [] }});
 	} else if (reddit_urls != null) {
 		let url = reddit_urls[0];
 		let { streamable_url, description } = await ProcessRedditURL(url);
 		if (url.match(streamable_url)) {
-			message.channel.send(`<@${message.author.id}> | [rxddit](${url.replace("reddit.com/", "rxddit.com/").replace("redd.it/", "rxddit.com/")}) | ${description}`);
+			message.channel.send({ content: `<@${message.author.id}> | [rxddit](${url.replace("reddit.com/", "rxddit.com/").replace("redd.it/", "rxddit.com/")}) | ${description}`, allowedMentions: { parse: [] }});
 		} else {
-			message.channel.send(`<@${message.author.id}> | [streamable](${streamable_url})`)
+			message.channel.send({ content: `<@${message.author.id}> | [streamable](${streamable_url})`, allowedMentions: { parse: [] }})
 		}
 	}
 	if (seen) { message.delete(); }
