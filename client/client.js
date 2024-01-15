@@ -1,7 +1,8 @@
-const { Client, Collection, GatewayIntentBits } = require('discord.js');
-const { Pool } = require('pg');
+import { Client, Collection, GatewayIntentBits } from 'discord.js';
+import pg from "pg";
+const { Pool } = pg;
 
-module.exports = class extends Client {
+export default class extends Client {
 	constructor(config) {
 		super({ intents: [GatewayIntentBits.MessageContent, GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildEmojisAndStickers, GatewayIntentBits.GuildInvites, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMessageTyping, GatewayIntentBits.DirectMessages, GatewayIntentBits.DirectMessageReactions, GatewayIntentBits.DirectMessageTyping] });
 

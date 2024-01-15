@@ -1,4 +1,4 @@
-module.exports = {
+export const Roll = {
 	name: 'roll',
 	description: 'To roll a dice',
 	args: false,

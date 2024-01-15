@@ -7,6 +7,7 @@
     "node": "18.x",
     "npm": "^9.5.1"
   },
+  "type": "module",
   "scripts": {
     "test": "jest --passWithNoTests",
     "start": "node frong.js"

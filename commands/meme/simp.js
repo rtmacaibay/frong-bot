@@ -1,4 +1,4 @@
-module.exports = {
+export const Simp = {
 	name: 'simp',
 	description: 'For alerting others of the simp',
 	args: false,
