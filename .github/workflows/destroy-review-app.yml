@@ -15,7 +15,7 @@ jobs:
       - name: Get review app id
         id: get-id
         run: |
-          RESPONSE=$(curl -n https://api.heroku.com/apps/${{ env.app-name }}-pr-${{ github.event.number }}/review-app -H "Accept: application/vnd.heroku+json; version=3" -H "Authorization: Bearer ${{ secrets.HEROKU_API_KEY }}")
+          RESPONSE=$(curl -n https://api.heroku.com/apps/frong-bot-dev-pr-${{ github.event.number }}/review-app -H "Accept: application/vnd.heroku+json; version=3" -H "Authorization: Bearer ${{ secrets.HEROKU_API_KEY }}")
           APP_ID=$(echo $RESPONSE | jq -r '.id')
           echo "::set-output name=app-id::$APP_ID"
 
