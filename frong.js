@@ -148,7 +148,7 @@ function ExtractURLs(message) {
     return { tiktok_urls, instagram_urls, twitter_urls, reddit_urls };
 }
 
-function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, reddit_urls) {
+async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, reddit_urls) {
 	let seen = tiktok_urls != null || instagram_urls != null || twitter_urls != null || reddit_urls != null;
 	if (tiktok_urls != null) {
 		let url = tiktok_urls[0];
@@ -157,7 +157,7 @@ function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, reddit_
 				return;
 			}
 			let username = await ProcessTiktokUsername(url);
-			let {carouselArr, description } = await IsCarousel(quickvids_url)
+			let {carouselArr, description } = await ProcessTiktokCarouselAndDescription(quickvids_url)
 			if (carouselArr.length > 0) {
 				let embeds = [new Discord.EmbedBuilder().setURL(quickvids_url).setImage(carouselArr[0]).setTitle(description)];
 				for (let i = 1; i < carouselArr.length; i++) {
@@ -170,17 +170,18 @@ function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, reddit_
 		});
 	} else if (instagram_urls != null) {
 		let url = instagram_urls[0];
-		if (url.includes("reel")) {
-			message.channel.send(`<@${message.author.id}> | [instagramez](${url.replace("https://instagram.com/", "https://www.instagramez.com/")})`);
-		} else {
-			message.channel.send(`<@${message.author.id}> | [ddinstagram](${url.replace("https://instagram.com/", "https://ddinstagram.com/")})`);
-		}
+		message.channel.send(`<@${message.author.id}> | [ddinstagram](${url.replace("https://instagram.com/", "https://ddinstagram.com/")})`);
 	} else if (twitter_urls != null) {
 		let url = twitter_urls[0];
 		message.channel.send(`<@${message.author.id}> | [vxtwitter](${url.replace("https://twitter.com/", "https://vxtwitter.com/")})`);
 	} else if (reddit_urls != null) {
 		let url = reddit_urls[0];
-		message.channel.send(`<@${message.author.id}> | [rxddit](${url.replace("reddit.com/", "rxddit.com/").replace("redd.it/", "rxddit.com/")})`);
+		let { streamable_url, description } = await ProcessRedditURL(url);
+		if (url.match(streamable_url)) {
+			message.channel.send(`<@${message.author.id}> | [rxddit](${url.replace("reddit.com/", "rxddit.com/").replace("redd.it/", "rxddit.com/")}) | ${description}`);
+		} else {
+			message.channel.send(`<@${message.author.id}> | [streamable](${streamable_url})`)
+		}
 	}
 	if (seen) { message.delete(); }
 }
@@ -212,7 +213,7 @@ async function Quickvids(tiktok_url) {
 	});
 }
 
-async function IsCarousel(quickvids_url) {
+async function ProcessTiktokCarouselAndDescription(quickvids_url) {
 	return new Promise(function(resolve, reject) {
 		try {
 			fetch(quickvids_url, {
@@ -272,6 +273,39 @@ async function ProcessTiktokUsername(tiktok_url) {
 		}
 	})
 }
+
+async function ProcessRedditURL(url) {
+	return new Promise(function(resolve, reject) {
+		try {
+			fetch(url, {
+				method: "GET",
+				headers: {
+					"content-type": "application/json",
+					"user-agent": "Frong Bot - macaibay.com",
+				}
+			}).then(async (response) => {
+				let description = "";
+				if (response.status == 200) {
+					let resp = await response.text();
+					if (resp.includes("\"target_url_domain\": \"streamable.com\"")) {
+						let streamable_url = resp.substring(resp.indexOf("https", resp.indexOf("target_url")), resp.indexOf("\",", resp.indexOf("target_url")));
+						resolve({ streamable_url, description });
+					} else {
+						description = resp.substring(resp.indexOf(">", resp.indexOf("<title>")) + 1, resp.indexOf("</title>"));
+						resolve({ url, description });
+					}
+				} else {
+					resolve({ url, description });
+				}
+			});
+		} catch (error) {
+			console.error(error);
+			error = reject;
+		}
+	});
+}
+
+
 
 client.on('voiceStateUpdate', (oldMember, newMember) => {
 	try {
