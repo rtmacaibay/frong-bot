@@ -1,0 +1,39 @@
+# .github/workflows/destroy-review-app.yml
+name: Destroy review app
+on:
+  pull_request:
+    types: [closed]
+
+env:
+  app-name: <predictable-url-pattern>
+
+jobs:
+  heroku-review-application:
+    name: Destroy Heroku review app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get review app id
+        id: get-id
+        run: |
+          RESPONSE=$(curl -n https://api.heroku.com/apps/${{ env.app-name }}-pr-${{ github.event.number }}/review-app -H "Accept: application/vnd.heroku+json; version=3" -H "Authorization: Bearer ${{ secrets.HEROKU_API_KEY }}")
+          APP_ID=$(echo $RESPONSE | jq -r '.id')
+          echo "::set-output name=app-id::$APP_ID"
+
+      - name: Destroy app
+        id: destroy-app
+        run: |
+          APP_ID=${{ steps.get-id.outputs.app-id }}
+          if [ "$APP_ID" = "not_found" ]; then
+            echo "App not found."
+            exit 0
+          fi
+          echo "Using id ${{ steps.get-id.outputs.app-id }}"
+          RESPONSE=$(curl -n -X DELETE https://api.heroku.com/review-apps/"$APP_ID" -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3" -H "Authorization: Bearer ${{ secrets.HEROKU_API_KEY }}")
+          STATUS=$(echo "$RESPONSE" | jq -r '.status')
+          if [ "$STATUS" = "deleting" ]; then
+            echo "App deleted"
+          else
+            echo "Error deleting app"
+            echo "$RESPONSE"
+            exit 1
+          fi
