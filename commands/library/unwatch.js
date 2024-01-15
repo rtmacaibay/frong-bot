@@ -1,4 +1,4 @@
-module.exports = {
+export const Unwatch = {
 	name: 'unwatch',
 	description: 'Unwatches a channel',
 	usage: '{user must be in voice channel to unwatch}',

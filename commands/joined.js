@@ -1,4 +1,4 @@
-module.exports = {
+export const Joined = {
 	name: 'joined',
 	description: 'Displays when you joined the server',
 	aliases: ['j'],

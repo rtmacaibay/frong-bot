@@ -1,4 +1,4 @@
-module.exports = {
+export const Clean = {
 	name: 'clean',
 	description:
     'Deletes a number of messages that are no more than two weeks old',

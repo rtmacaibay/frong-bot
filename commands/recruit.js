@@ -1,4 +1,4 @@
-module.exports = {
+export const Recruit = {
 	name: 'recruit',
 	description: 'Another classic Pooncity copypasta',
 	args: false,

@@ -1,38 +1,16 @@
-const fs = require('fs');
-const Discord = require('discord.js');
-const Client = require('./client/client.js');
-const { config } = require('./config.js');
-const fetch = require('node-fetch');
+import fs from 'fs';
+import Discord from 'discord.js';
+import Client from './client/client.js';
+import { config } from './config.js';
+import fetch from 'node-fetch';
+import { Commands } from './exports.js';
 
 const client = new Client(config);
 const token = client.token;
 
-const mainCommands = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-
-for (const file of mainCommands) {
-	const loc = `${file}`;
-	const command = require(`./commands/${loc}`);
+for (const command of Commands) {
 	client.commands.set(command.name, command);
-	client.commandsLoc.set(command.name, loc);
 }
-
-const memeCommands = fs.readdirSync('./commands/meme').filter(file => file.endsWith('.js'));
-
-for (const file of memeCommands) {
-	const loc = `meme/${file}`;
-	const command = require(`./commands/${loc}`);
-	client.commands.set(command.name, command);
-	client.commandsLoc.set(command.name, loc);
-}
-
-// const libCommands = fs.readdirSync('./commands/library').filter(file => file.endsWith('.js'));
-
-// for (const file of libCommands) {
-// 	const loc = `library/${file}`;
-// 	const command = require(`./commands/${loc}`);
-// 	client.commands.set(command.name, command);
-// 	client.commandsLoc.set(command.name, loc);
-// }
 
 const cooldowns = new Discord.Collection();
 
@@ -55,7 +33,7 @@ client.on(Discord.Events.MessageCreate, async message => {
 		;`,
 		[message.guild.id],
 		async (err, res) => {
-			if (err) {
+			if (err || res.rowsCount == 0) {
 				await client.pool.query(`
 					INSERT INTO servers
 						(server_name, server_id, prefix)
@@ -72,7 +50,7 @@ client.on(Discord.Events.MessageCreate, async message => {
 						if (res.rowCount > 0) {
 							console.log(`Server rows added: ${res.rowCount}`);
 						}
-						GatherPrefix(message);
+						InterpretMessage(message, client.prefix);
 					}
 				});
 			} else {
@@ -151,7 +129,7 @@ function InterpretMessage(message, prefix) {
 }
 
 function ExtractURLs(message) {
-	tiktok_urls = message.match(/(https:\/\/(www\.)?(vt|vm)\.tiktok\.com\/[A-Za-z0-9]+|https:\/\/(vx)?tiktok\.com\/@[\w.]+\/video\/[\d]+\/?|https:\/\/(vx)?tiktok\.com\/t\/[a-zA-Z0-9]+\/?)/);
+	let tiktok_urls = message.match(/(https:\/\/(www\.)?(vt|vm)\.tiktok\.com\/[A-Za-z0-9]+|https:\/\/(vx)?tiktok\.com\/@[\w.]+\/video\/[\d]+\/?|https:\/\/(vx)?tiktok\.com\/t\/[a-zA-Z0-9]+\/?)/);
 	if (tiktok_urls == null) {
 		tiktok_urls = message.match(/https:\/\/(vx)?tiktok\.com\/@[\w.]?\/video\/[\d]+\/?/);
 		if (tiktok_urls != null) {
@@ -163,9 +141,9 @@ function ExtractURLs(message) {
 			}
 		}
 	}
-	instagram_urls = message.match(/(https:\/\/(www.)?instagram\.com\/(?:p|reel)\/([^/?#&]+))/);
-    twitter_urls = message.replace("https://x.com/", "https://twitter.com/").match(/(https:\/\/(www.)?(twitter|x)\.com\/[a-zA-Z0-9_]+\/status\/[0-9]+)/);
-    reddit_urls = message.match(/(https?:\/\/(?:www\.)?(?:old\.)?reddit\.com\/r\/[A-Za-z0-9_]+\/(?:comments|s)\/[A-Za-z0-9_]+(?:\/[^\/ ]+)?(?:\/\w+)?)|(https?:\/\/(?:www\.)?redd\.it\/[A-Za-z0-9]+)/);
+	let instagram_urls = message.match(/(https:\/\/(www.)?instagram\.com\/(?:p|reel)\/([^/?#&]+))/);
+    let twitter_urls = message.replace("https://x.com/", "https://twitter.com/").match(/(https:\/\/(www.)?(twitter|x)\.com\/[a-zA-Z0-9_]+\/status\/[0-9]+)/);
+    let reddit_urls = message.match(/(https?:\/\/(?:www\.)?(?:old\.)?reddit\.com\/r\/[A-Za-z0-9_]+\/(?:comments|s)\/[A-Za-z0-9_]+(?:\/[^\/ ]+)?(?:\/\w+)?)|(https?:\/\/(?:www\.)?redd\.it\/[A-Za-z0-9]+)/);
 
     return { tiktok_urls, instagram_urls, twitter_urls, reddit_urls };
 }

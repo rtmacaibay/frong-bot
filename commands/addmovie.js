@@ -1,4 +1,4 @@
-module.exports = {
+export const AddMovie = {
 	name: 'addmovie',
 	description: 'Adds a movie',
 	aliases: ['addm'],

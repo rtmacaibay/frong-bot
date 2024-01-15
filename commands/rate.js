@@ -1,4 +1,4 @@
-module.exports = {
+export const Rate = {
 	name: 'rate',
 	description: 'Rates anything you ask it to rate',
 	aliases: ['r'],
