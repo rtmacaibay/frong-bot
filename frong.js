@@ -160,10 +160,11 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 			let {carouselArr, description } = await ProcessTiktokCarouselAndDescription(quickvids_url)
 			if (carouselArr.length > 0) {
 				let embeds = [new Discord.EmbedBuilder().setURL(quickvids_url).setImage(carouselArr[0]).setTitle(description)];
-				for (let i = 1; i < carouselArr.length; i++) {
-					embeds.push(new Discord.EmbedBuilder().setURL(quickvids_url).setImage(carouselArr[i]));
+				let embedArr = carouselArr.slice(0, 4);
+				for (let i = 1; i < embedArr.length; i++) {
+					embeds.push(new Discord.EmbedBuilder().setURL(quickvids_url).setImage(embedArr[i]));
 				}
-				message.channel.send({ content: `<@${message.author.id}> | [@${username} | QuickVids.win](${quickvids_url})`, embeds: embeds, allowedMentions: { parse: [] }});
+				message.channel.send({ content: `<@${message.author.id}> | [@${username} | QuickVids.win | Download All ${carouselArr.length} Images Here](${quickvids_url})`, embeds: embeds, allowedMentions: { parse: [] }});
 			} else {
 				message.channel.send({ content: `<@${message.author.id}> | [@${username} | QuickVids.win](${quickvids_url}) | ${description}`, allowedMentions: { parse: [] }});
 			}
@@ -227,8 +228,7 @@ async function ProcessTiktokCarouselAndDescription(quickvids_url) {
 					let resp = await response.text();
 					if (resp.includes(">Download All Images</button>")) {
 						let data = resp.substring(resp.indexOf("[", resp.indexOf("images:[", resp.indexOf("const data ="))), resp.indexOf("],", resp.indexOf("images:[", resp.indexOf("const data ="))) + 1);
-						let output = await JSON.parse(data);
-						let carouselArr = output.slice(0, 4);
+						let carouselArr = await JSON.parse(data);
 						let description = resp.substring(resp.indexOf("\"", resp.indexOf("description:\"", resp.indexOf("const data ="))), resp.indexOf("\",", resp.indexOf("description:\"", resp.indexOf("const data ="))) + 1);
 						resolve({ carouselArr, description });
 					} else {
