@@ -71,7 +71,7 @@ function InterpretMessage(message, prefix) {
 
 	let { tiktok_urls, instagram_urls, twitter_urls, reddit_urls } = ExtractURLs(msg.replace("https://www.", "https://"));
 
-	ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, reddit_urls)
+	ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, reddit_urls);
 
 	if (!msg.startsWith(prefix) || message.author.bot) {return;}
 
@@ -152,21 +152,20 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 	let seen = tiktok_urls != null || instagram_urls != null || twitter_urls != null || reddit_urls != null;
 	if (tiktok_urls != null) {
 		let url = tiktok_urls[0];
-		Quickvids(url.replace("https://vxtiktok.com/", "https://tiktok.com/")).then(async (quickvids_url) => {
-			if (quickvids_url == undefined) {
+		Quickvids(url.replace("https://vxtiktok.com/", "https://tiktok.com/")).then(async (quickvids) => {
+			if (quickvids == undefined) {
 				return;
 			}
-			let username = await ProcessTiktokUsername(url);
-			let {carouselArr, description } = await ProcessTiktokCarouselAndDescription(quickvids_url)
+			let carouselArr = await ProcessTiktokCarousel(quickvids.url)
 			if (carouselArr.length > 0) {
-				let embeds = [new Discord.EmbedBuilder().setURL(quickvids_url).setImage(carouselArr[0]).setTitle(description)];
+				let embeds = [new Discord.EmbedBuilder().setURL(quickvids.url).setImage(carouselArr[0]).setTitle("\"" + quickvids.description + "\"")];
 				let embedArr = carouselArr.slice(0, 4);
 				for (let i = 1; i < embedArr.length; i++) {
-					embeds.push(new Discord.EmbedBuilder().setURL(quickvids_url).setImage(embedArr[i]));
+					embeds.push(new Discord.EmbedBuilder().setURL(quickvids.url).setImage(embedArr[i]));
 				}
-				message.channel.send({ content: `<@${message.author.id}> | [@${username} | QuickVids.win | Download All ${carouselArr.length} Images Here](${quickvids_url})`, embeds: embeds, allowedMentions: { parse: [] }});
+				message.channel.send({ content: `<@${message.author.id}> | [@${quickvids.username} | QuickVids.win | Download All ${carouselArr.length} Images Here](${quickvids.url})`, embeds: embeds, allowedMentions: { parse: [] }});
 			} else {
-				message.channel.send({ content: `<@${message.author.id}> | [@${username} | QuickVids.win](${quickvids_url}) | ${description}`, allowedMentions: { parse: [] }});
+				message.channel.send({ content: `<@${message.author.id}> | [@${quickvids.username} | QuickVids.win](${quickvids.url}) | \"${quickvids.description}\"`, allowedMentions: { parse: [] }});
 			}
 		});
 	} else if (instagram_urls != null) {
@@ -194,6 +193,7 @@ async function Quickvids(tiktok_url) {
 				method: "POST",
 				body: JSON.stringify({
 					"input_text": tiktok_url,
+					"detailed": true,
 				}),
 				headers: {
 					"content-type": "application/json",
@@ -202,7 +202,7 @@ async function Quickvids(tiktok_url) {
 			}).then(async (response) => {
 				if (response.status == 200) {
 					let resp = await response.json();
-					resolve(resp['quickvids_url']);
+					resolve({ url: resp['quickvids_url'],  username: resp['details']['author']['username'], description: resp['details']['video']['description'] });
 				} else {
 					resolve(undefined);
 				}
@@ -214,7 +214,7 @@ async function Quickvids(tiktok_url) {
 	});
 }
 
-async function ProcessTiktokCarouselAndDescription(quickvids_url) {
+async function ProcessTiktokCarousel(quickvids_url) {
 	return new Promise(function(resolve, reject) {
 		try {
 			fetch(quickvids_url, {
@@ -229,16 +229,9 @@ async function ProcessTiktokCarouselAndDescription(quickvids_url) {
 					if (resp.includes(">Download All Images</button>")) {
 						let data = resp.substring(resp.indexOf("[", resp.indexOf("images:[", resp.indexOf("const data ="))), resp.indexOf("],", resp.indexOf("images:[", resp.indexOf("const data ="))) + 1);
 						let carouselArr = await JSON.parse(data);
-						let description = resp.substring(resp.indexOf("\"", resp.indexOf("description:\"", resp.indexOf("const data ="))), resp.indexOf("\",", resp.indexOf("description:\"", resp.indexOf("const data ="))) + 1);
-						resolve({ carouselArr, description });
+						resolve(carouselArr);
 					} else {
-						let carouselArr = [];
-						let description = resp.substring(resp.indexOf("\"", resp.indexOf("description:\"", resp.indexOf("const data ="))), resp.indexOf("\",", resp.indexOf("description:\"", resp.indexOf("const data ="))));
-						if (description.includes("#")) {
-							description = description.substring(0, description.indexOf("#") - 1);
-							description = description + "\"";
-						}
-						resolve({ carouselArr, description });
+						resolve([]);
 					}
 				}
 			});
