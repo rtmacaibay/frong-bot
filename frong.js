@@ -129,9 +129,9 @@ function InterpretMessage(message, prefix) {
 }
 
 function ExtractURLs(message) {
-	let tiktok_urls = message.match(/(https:\/\/(www\.)?(vt|vm)\.tiktok\.com\/[A-Za-z0-9]+|https:\/\/(vx)?tiktok\.com\/@[\w.]+\/video\/[\d]+\/?|https:\/\/(vx)?tiktok\.com\/t\/[a-zA-Z0-9]+\/?)/);
+	let tiktok_urls = message.replace("photo", "video").match(/(https:\/\/(www\.)?(vt|vm)\.tiktok\.com\/[A-Za-z0-9]+|https:\/\/(www\.)?(vx)?tiktok\.com\/@[\w.]+\/video\/[\d]+\/?|https:\/\/(vx)?tiktok\.com\/t\/[a-zA-Z0-9]+\/?)/);
 	if (tiktok_urls == null) {
-		tiktok_urls = message.match(/https:\/\/(vx)?tiktok\.com\/@[\w.]?\/video\/[\d]+\/?/);
+		tiktok_urls = message.replace("photo", "video").match(/https:\/\/(vx)?tiktok\.com\/@[\w.]?\/video\/[\d]+\/?/);
 		if (tiktok_urls != null) {
 			let username = ProcessTiktokUsername(tiktok_urls[0]);
 			if (username != "") {
