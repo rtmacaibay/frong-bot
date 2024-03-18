@@ -158,7 +158,10 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 			}
 			let carouselArr = await ProcessTiktokCarousel(quickvids.url)
 			if (carouselArr.length > 0) {
-				let embeds = [new Discord.EmbedBuilder().setURL(quickvids.url).setImage(carouselArr[0]).setTitle("\"" + quickvids.description + "\"")];
+				var title = "\"" + quickvids.description + "\"";
+				var maxLength = 256;
+				var trimmedTitle = title.length > maxLength ? title.substring(0, maxLength - 3) + "..." : title;
+				let embeds = [new Discord.EmbedBuilder().setURL(quickvids.url).setImage(carouselArr[0]).setTitle(trimmedTitle)];
 				let embedArr = carouselArr.slice(0, 4);
 				for (let i = 1; i < embedArr.length; i++) {
 					embeds.push(new Discord.EmbedBuilder().setURL(quickvids.url).setImage(embedArr[i]));
