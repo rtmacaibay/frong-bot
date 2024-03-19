@@ -158,15 +158,12 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 			}
 			let carouselArr = await ProcessTiktokCarousel(quickvids.url)
 			if (carouselArr.length > 0) {
-				var title = "\"" + quickvids.description + "\"";
-				var maxLength = 256;
-				var trimmedTitle = title.length > maxLength ? title.substring(0, maxLength - 3) + "..." : title;
-				let embeds = [new Discord.EmbedBuilder().setURL(quickvids.url).setImage(carouselArr[0]).setTitle(trimmedTitle)];
+				let embeds = [new Discord.EmbedBuilder().setURL(quickvids.url).setImage(carouselArr[0]).setTitle(`Download All ${carouselArr.length} Images Here`)];
 				let embedArr = carouselArr.slice(0, 4);
 				for (let i = 1; i < embedArr.length; i++) {
 					embeds.push(new Discord.EmbedBuilder().setURL(quickvids.url).setImage(embedArr[i]));
 				}
-				message.channel.send({ content: `<@${message.author.id}> | [@${quickvids.username} | QuickVids.win | Download All ${carouselArr.length} Images Here](${quickvids.url})`, embeds: embeds, allowedMentions: { parse: [] }});
+				message.channel.send({ content: `<@${message.author.id}> | [@${quickvids.username} | QuickVids.win](${quickvids.url}) | \"${quickvids.description}\"`, embeds: embeds, allowedMentions: { parse: [] }});
 			} else {
 				message.channel.send({ content: `<@${message.author.id}> | [@${quickvids.username} | QuickVids.win](${quickvids.url}) | \"${quickvids.description}\"`, allowedMentions: { parse: [] }});
 			}
