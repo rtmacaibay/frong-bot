@@ -20,7 +20,7 @@
     "dotenv": "^16.4.5",
     "eslint": "^8.57.0",
     "node-fetch": "^3.3.2",
-    "pg": "^8.11.4",
+    "pg": "^8.11.5",
     "pluralize": "^8.0.0"
   },
   "devDependencies": {
