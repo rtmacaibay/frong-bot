@@ -216,8 +216,8 @@ async function Quickvids(tiktok_url) {
 							"user-agent": "Frong Bot - macaibay.com",
 						}
 					}).then(async (innerResponse) => {
-						if (response.status == 200) {
-							let resp = await response.json();
+						if (innerResponse.status == 200) {
+							let resp = await innerResponse.json();
 							resolve({ url: resp['quickvids_url'],  username: undefined, description: undefined });
 						} else {
 							resolve(undefined)
