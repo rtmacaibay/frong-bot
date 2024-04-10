@@ -153,7 +153,8 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 	if (tiktok_urls != null) {
 		let url = tiktok_urls[0];
 		Quickvids(url.replace("https://vxtiktok.com/", "https://tiktok.com/")).then(async (quickvids) => {
-			if (quickvids == undefined) {
+			if (quickvids == undefined || quickvids.url == undefined) {
+				console.log(quickvids);
 				message.channel.send({ content: `<@${message.author.id}> | [Original TikTok URL](${url.replace("https://tiktok", "https://www.tiktok")}) | \"An error occurred while embedding.\"`, allowedMentions: { parse: [] }})
 			}
 			let carouselArr = await ProcessTiktokCarousel(quickvids.url)
