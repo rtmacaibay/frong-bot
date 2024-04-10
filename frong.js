@@ -69,7 +69,7 @@ function InterpretMessage(message, prefix) {
 		message.delete('This is the welcome channel idiot.');
 	}
 
-	let { tiktok_urls, instagram_urls, twitter_urls, reddit_urls } = ExtractURLs(msg.replace("https://www.", "https://"));
+	let { tiktok_urls, instagram_urls, twitter_urls, reddit_urls } = ExtractURLs(msg);
 
 	ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, reddit_urls);
 
@@ -129,7 +129,7 @@ function InterpretMessage(message, prefix) {
 }
 
 function ExtractURLs(message) {
-	let tiktok_urls = message.replace("photo", "video").match(/(https:\/\/(www\.)?(vt|vm)\.tiktok\.com\/[A-Za-z0-9]+|https:\/\/(www\.)?(vx)?tiktok\.com\/@[\w.]+\/video\/[\d]+\/?|https:\/\/(vx)?tiktok\.com\/t\/[a-zA-Z0-9]+\/?)/);
+	let tiktok_urls = message.replace("photo", "video").replace("https://vxtiktok.com/", "https://tiktok.com/").match(/https:\/\/(www.)?((vm|vt).tiktok.com\/[A-Za-z0-9]+|tiktok.com\/@[\w.]+\/video\/[\d]+\/?|tiktok.com\/t\/[a-zA-Z0-9]+\/)/);
 	if (tiktok_urls == null) {
 		tiktok_urls = message.replace("photo", "video").match(/https:\/\/(vx)?tiktok\.com\/@[\w.]?\/video\/[\d]+\/?/);
 		if (tiktok_urls != null) {
@@ -143,7 +143,7 @@ function ExtractURLs(message) {
 	}
 	let instagram_urls = message.match(/(https:\/\/(www.)?instagram\.com\/(?:p|reel)\/([^/?#&]+))/);
     let twitter_urls = message.replace("https://x.com/", "https://twitter.com/").match(/(https:\/\/(www.)?(twitter|x)\.com\/[a-zA-Z0-9_]+\/status\/[0-9]+)/);
-    let reddit_urls = message.match(/(https?:\/\/(?:www\.)?(?:old\.)?reddit\.com\/r\/[A-Za-z0-9_]+\/(?:comments|s)\/[A-Za-z0-9_]+(?:\/[^\/ ]+)?(?:\/\w+)?)|(https?:\/\/(?:www\.)?redd\.it\/[A-Za-z0-9]+)/);
+    let reddit_urls = message.match(/(https?:\/\/(?:www.)?(?:old\.)?reddit\.com\/r\/[A-Za-z0-9_]+\/(?:comments|s)\/[A-Za-z0-9_]+(?:\/[^\/ ]+)?(?:\/\w+)?)|(https?:\/\/(?:www.)?redd\.it\/[A-Za-z0-9]+)/);
 
     return { tiktok_urls, instagram_urls, twitter_urls, reddit_urls };
 }
@@ -152,10 +152,10 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 	let seen = tiktok_urls != null || instagram_urls != null || twitter_urls != null || reddit_urls != null;
 	if (tiktok_urls != null) {
 		let url = tiktok_urls[0];
-		Quickvids(url.replace("https://vxtiktok.com/", "https://tiktok.com/")).then(async (quickvids) => {
+		Quickvids(url).then(async (quickvids) => {
 			if (quickvids == undefined || quickvids.url == undefined) {
-				console.log(quickvids);
 				message.channel.send({ content: `<@${message.author.id}> | [Original TikTok URL](${url.replace("https://tiktok", "https://www.tiktok")}) | \"An error occurred while embedding.\"`, allowedMentions: { parse: [] }})
+				return;
 			}
 			let carouselArr = await ProcessTiktokCarousel(quickvids.url)
 			if (carouselArr.length > 0) {
