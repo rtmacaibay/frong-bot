@@ -204,6 +204,25 @@ async function Quickvids(tiktok_url) {
 				if (response.status == 200) {
 					let resp = await response.json();
 					resolve({ url: resp['quickvids_url'],  username: resp['details']['author']['username'], description: resp['details']['video']['description'] });
+				} else if (response.status == 500) {
+					fetch("https://api.quickvids.win/v1/shorturl/create", {
+						method: "POST",
+						body: JSON.stringify({
+							"input_text": tiktok_url,
+							"detailed": false,
+						}),
+						headers: {
+							"content-type": "application/json",
+							"user-agent": "Frong Bot - macaibay.com",
+						}
+					}).then(async (innerResponse) => {
+						if (response.status == 200) {
+							let resp = await response.json();
+							resolve({ url: resp['quickvids_url'],  username: undefined, description: undefined });
+						} else {
+							resolve(undefined)
+						}
+					});
 				} else {
 					resolve(undefined);
 				}
