@@ -157,6 +157,14 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 				message.channel.send({ content: `<@${message.author.id}> | [Original TikTok URL](${url.replace("https://tiktok", "https://www.tiktok")}) | \"An error occurred while embedding.\"`, allowedMentions: { parse: [] }})
 				return;
 			}
+			let usernameOutput = `@${quickvids.username} | QuickVids.win`;
+			let descriptionOutput = ` | \"${quickvids.description}\"`;
+			if (quickvids.username == undefined || quickvids.username == "") {
+				usernameOutput = "QuickVids.win"
+			}
+			if (quickvids.description == undefined || quickvids.description == "") {
+				descriptionOutput = ""
+			}
 			let carouselArr = await ProcessTiktokCarousel(quickvids.url)
 			if (carouselArr.length > 0) {
 				let embeds = [new Discord.EmbedBuilder().setURL(quickvids.url).setImage(carouselArr[0]).setTitle(`Download All ${carouselArr.length} Images Here`)];
@@ -164,9 +172,9 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 				for (let i = 1; i < embedArr.length; i++) {
 					embeds.push(new Discord.EmbedBuilder().setURL(quickvids.url).setImage(embedArr[i]));
 				}
-				message.channel.send({ content: `<@${message.author.id}> | [@${quickvids.username} | QuickVids.win](${quickvids.url}) | \"${quickvids.description}\"`, embeds: embeds, allowedMentions: { parse: [] }});
+				message.channel.send({ content: `<@${message.author.id}> | [${usernameOutput}](${quickvids.url})${descriptionOutput}`, embeds: embeds, allowedMentions: { parse: [] }});
 			} else {
-				message.channel.send({ content: `<@${message.author.id}> | [@${quickvids.username} | QuickVids.win](${quickvids.url}) | \"${quickvids.description}\"`, allowedMentions: { parse: [] }});
+				message.channel.send({ content: `<@${message.author.id}> | [${usernameOutput}](${quickvids.url})${descriptionOutput}`, allowedMentions: { parse: [] }});
 			}
 		});
 	} else if (instagram_urls != null) {
