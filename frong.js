@@ -207,7 +207,8 @@ async function Quickvids(tiktok_url) {
 				headers: {
 					"content-type": "application/json",
 					"user-agent": "Frong Bot - macaibay.com",
-				}
+				},
+				signal: AbortSignal.timeout(5000)
 			}).then(async (response) => {
 				if (response.status == 200) {
 					let resp = await response.json();
@@ -222,7 +223,8 @@ async function Quickvids(tiktok_url) {
 						headers: {
 							"content-type": "application/json",
 							"user-agent": "Frong Bot - macaibay.com",
-						}
+						},
+						signal: AbortSignal.timeout(5000)
 					}).then(async (innerResponse) => {
 						if (innerResponse.status == 200) {
 							let resp = await innerResponse.json();
