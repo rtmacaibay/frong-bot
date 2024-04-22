@@ -238,8 +238,12 @@ async function Quickvids(tiktok_url) {
 				}
 			});
 		} catch (error) {
-			console.error(error);
-			error = reject;
+			if (error.name === "AbortError") {
+				resolve(undefined)
+			} else {
+				console.error(error);
+				error = reject;
+			}
 		}
 	});
 }
