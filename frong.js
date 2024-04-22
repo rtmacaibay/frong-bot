@@ -154,7 +154,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 		let url = tiktok_urls[0];
 		Quickvids(url).then(async (quickvids) => {
 			if (quickvids == undefined || quickvids.url == undefined) {
-				message.channel.send({ content: `<@${message.author.id}> | [Original TikTok URL](${url.replace("https://tiktok", "https://www.tiktok")}) | \"An error occurred while embedding.\"`, allowedMentions: { parse: [] }})
+				message.channel.send({ content: `<@${message.author.id}> | [vxtiktok](${url.replace("https://tiktok", "https://vxtiktok")})`, allowedMentions: { parse: [] }})
 				return;
 			}
 			let usernameOutput = `@${quickvids.username} | QuickVids.win`;
