@@ -208,7 +208,7 @@ async function Quickvids(tiktok_url) {
 					"content-type": "application/json",
 					"user-agent": "Frong Bot - macaibay.com",
 				},
-				signal: AbortSignal.timeout(5000)
+				timeout: 5000
 			}).then(async (response) => {
 				if (response.status == 200) {
 					let resp = await response.json();
@@ -224,7 +224,7 @@ async function Quickvids(tiktok_url) {
 							"content-type": "application/json",
 							"user-agent": "Frong Bot - macaibay.com",
 						},
-						signal: AbortSignal.timeout(5000)
+						timeout: 5000
 					}).then(async (innerResponse) => {
 						if (innerResponse.status == 200) {
 							let resp = await innerResponse.json();
@@ -238,12 +238,8 @@ async function Quickvids(tiktok_url) {
 				}
 			});
 		} catch (error) {
-			if (error instanceof AbortError) {
-				resolve(undefined)
-			} else {
-				console.error(error);
-				error = reject;
-			}
+			console.error(error);
+			error = reject;
 		}
 	});
 }
