@@ -69,7 +69,7 @@ function InterpretMessage(message, prefix) {
 		message.delete('This is the welcome channel idiot.');
 	}
 
-	let { tiktok_urls, instagram_urls, twitter_urls, reddit_urls } = ExtractURLs(msg);
+	let { tiktok_urls, instagram_urls, twitter_urls, reddit_urls } = ExtractURLs(msg.replace("https://www.", "https://"));
 
 	ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, reddit_urls);
 
@@ -208,7 +208,7 @@ async function Quickvids(tiktok_url) {
 					"content-type": "application/json",
 					"user-agent": "Frong Bot - macaibay.com",
 				},
-				timeout: 5000
+				signal: AbortSignal.timeout(5000)
 			}).then(async (response) => {
 				if (response.status == 200) {
 					let resp = await response.json();
@@ -224,7 +224,7 @@ async function Quickvids(tiktok_url) {
 							"content-type": "application/json",
 							"user-agent": "Frong Bot - macaibay.com",
 						},
-						timeout: 5000
+						signal: AbortSignal.timeout(5000)
 					}).then(async (innerResponse) => {
 						if (innerResponse.status == 200) {
 							let resp = await innerResponse.json();
