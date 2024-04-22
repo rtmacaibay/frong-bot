@@ -69,7 +69,7 @@ function InterpretMessage(message, prefix) {
 		message.delete('This is the welcome channel idiot.');
 	}
 
-	let { tiktok_urls, instagram_urls, twitter_urls, reddit_urls } = ExtractURLs(msg);
+	let { tiktok_urls, instagram_urls, twitter_urls, reddit_urls } = ExtractURLs(msg.replace("https://www.", "https://"));
 
 	ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, reddit_urls);
 
