@@ -2,7 +2,7 @@ import fs from 'fs';
 import Discord from 'discord.js';
 import Client from './client/client.js';
 import { config } from './config.js';
-import fetch from 'node-fetch';
+import fetch, { AbortError } from 'node-fetch';
 import { Commands } from './exports.js';
 
 const client = new Client(config);
@@ -238,7 +238,7 @@ async function Quickvids(tiktok_url) {
 				}
 			});
 		} catch (error) {
-			if (error.name === 'AbortError') {
+			if (error instanceof AbortError) {
 				resolve(undefined)
 			} else {
 				console.error(error);
