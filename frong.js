@@ -238,7 +238,7 @@ async function Quickvids(tiktok_url) {
 				}
 			});
 		} catch (error) {
-			if (error.name === "AbortError") {
+			if (error.name === 'AbortError') {
 				resolve(undefined)
 			} else {
 				console.error(error);
