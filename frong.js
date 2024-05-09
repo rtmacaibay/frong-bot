@@ -141,7 +141,8 @@ function ExtractURLs(message) {
 			}
 		}
 	}
-	let instagram_urls = message.match(/(https:\/\/(www.)?instagram\.com\/(?:p|reel)\/([^/?#&]+))/);
+	// let instagram_urls = message.match(/(https:\/\/(www.)?instagram\.com\/(?:p|reel)\/([^/?#&]+))/);
+	let instagram_urls = null;
     let twitter_urls = message.replace("https://x.com/", "https://twitter.com/").match(/(https:\/\/(www.)?(twitter|x)\.com\/[a-zA-Z0-9_]+\/status\/[0-9]+)/);
     let reddit_urls = message.match(/(https?:\/\/(?:www.)?(?:old\.)?reddit\.com\/r\/[A-Za-z0-9_]+\/(?:comments|s)\/[A-Za-z0-9_]+(?:\/[^\/ ]+)?(?:\/\w+)?)|(https?:\/\/(?:www.)?redd\.it\/[A-Za-z0-9]+)/);
 
@@ -177,13 +178,13 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 				message.channel.send({ content: `<@${message.author.id}> | [${usernameOutput}](${quickvids.url})${descriptionOutput}`, allowedMentions: { parse: [] }});
 			}
 		});
-	} else if (instagram_urls != null) {
-		let url = instagram_urls[0];
-		if (url.includes("reel")) {
-			message.channel.send({ content: `<@${message.author.id}> | [instagramez](${url.replace("https://instagram.com/", "https://instagramez.com/")})`, allowedMentions: { parse: [] }});
-		} else {
-			message.channel.send({ content: `<@${message.author.id}> | [ddinstagram](${url.replace("https://instagram.com/", "https://ddinstagram.com/")})`, allowedMentions: { parse: [] }});
-		}
+	// } else if (instagram_urls != null) {
+	// 	let url = instagram_urls[0];
+	// 	if (url.includes("reel")) {
+	// 		message.channel.send({ content: `<@${message.author.id}> | [instagramez](${url.replace("https://instagram.com/", "https://instagramez.com/")})`, allowedMentions: { parse: [] }});
+	// 	} else {
+	// 		message.channel.send({ content: `<@${message.author.id}> | [ddinstagram](${url.replace("https://instagram.com/", "https://ddinstagram.com/")})`, allowedMentions: { parse: [] }});
+	// 	}
 	} else if (twitter_urls != null) {
 		let url = twitter_urls[0];
 		message.channel.send({ content: `<@${message.author.id}> | [vxtwitter](${url.replace("https://twitter.com/", "https://vxtwitter.com/")})`, allowedMentions: { parse: [] }});
