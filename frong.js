@@ -179,7 +179,11 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 		});
 	} else if (instagram_urls != null) {
 		let url = instagram_urls[0];
-		message.channel.send({ content: `<@${message.author.id}> | [ddinstagram](${url.replace("https://instagram.com/", "https://ddinstagram.com/")})`, allowedMentions: { parse: [] }});
+		if (url.includes("reel")) {
+			message.channel.send({ content: `<@${message.author.id}> | [instagramez](${url.replace("https://instagram.com/", "https://instagramez.com/")})`, allowedMentions: { parse: [] }});
+		} else {
+			message.channel.send({ content: `<@${message.author.id}> | [ddinstagram](${url.replace("https://instagram.com/", "https://ddinstagram.com/")})`, allowedMentions: { parse: [] }});
+		}
 	} else if (twitter_urls != null) {
 		let url = twitter_urls[0];
 		message.channel.send({ content: `<@${message.author.id}> | [vxtwitter](${url.replace("https://twitter.com/", "https://vxtwitter.com/")})`, allowedMentions: { parse: [] }});
