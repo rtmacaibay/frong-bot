@@ -253,6 +253,7 @@ async function Quickvids(tiktok_url) {
 async function ProcessTiktokCarousel(quickvids_url) {
 	return new Promise(function(resolve, reject) {
 		try {
+			console.log("also here");
 			fetch(quickvids_url, {
 				method: "GET",
 				headers: {
@@ -260,6 +261,7 @@ async function ProcessTiktokCarousel(quickvids_url) {
 					"user-agent": "Frong Bot - macaibay.com",
 				}
 			}).then(async (response) => {
+				console.log(response);
 				if (response.status == 200) {
 					let resp = await response.text();
 					if (resp.includes(">Download All Images</button>")) {
