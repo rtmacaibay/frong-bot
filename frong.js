@@ -265,6 +265,8 @@ async function ProcessTiktokCarousel(quickvids_url) {
 					} else {
 						resolve([]);
 					}
+				} else {
+					resolve([]);
 				}
 			});
 		} catch (error) {
