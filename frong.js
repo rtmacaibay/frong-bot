@@ -152,9 +152,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 	let seen = tiktok_urls != null || instagram_urls != null || twitter_urls != null || reddit_urls != null;
 	if (tiktok_urls != null) {
 		let url = tiktok_urls[0];
-		console.log(url);
 		Quickvids(url).then(async (quickvids) => {
-			console.log(quickvids);
 			if (quickvids == undefined || quickvids.url == undefined) {
 				message.channel.send({ content: `<@${message.author.id}> | [vxtiktok](${url.replace("https://tiktok", "https://vxtiktok")})`, allowedMentions: { parse: [] }})
 				return;
@@ -168,7 +166,6 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 				descriptionOutput = ""
 			}
 			let carouselArr = await ProcessTiktokCarousel(quickvids.url)
-			console.log(carouselArr);
 			if (carouselArr.length > 0) {
 				let embeds = [new Discord.EmbedBuilder().setURL(quickvids.url).setImage(carouselArr[0]).setTitle(`Download All ${carouselArr.length} Images Here`)];
 				let embedArr = carouselArr.slice(0, 4);
@@ -177,7 +174,6 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 				}
 				message.channel.send({ content: `<@${message.author.id}> | [${usernameOutput}](${quickvids.url})${descriptionOutput}`, embeds: embeds, allowedMentions: { parse: [] }});
 			} else {
-				console.log("here");
 				message.channel.send({ content: `<@${message.author.id}> | [${usernameOutput}](${quickvids.url})${descriptionOutput}`, allowedMentions: { parse: [] }});
 			}
 		});
@@ -253,7 +249,6 @@ async function Quickvids(tiktok_url) {
 async function ProcessTiktokCarousel(quickvids_url) {
 	return new Promise(function(resolve, reject) {
 		try {
-			console.log("also here");
 			fetch(quickvids_url, {
 				method: "GET",
 				headers: {
@@ -261,7 +256,6 @@ async function ProcessTiktokCarousel(quickvids_url) {
 					"user-agent": "Frong Bot - macaibay.com",
 				}
 			}).then(async (response) => {
-				console.log(response);
 				if (response.status == 200) {
 					let resp = await response.text();
 					if (resp.includes(">Download All Images</button>")) {
