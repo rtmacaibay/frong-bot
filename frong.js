@@ -152,7 +152,9 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 	let seen = tiktok_urls != null || instagram_urls != null || twitter_urls != null || reddit_urls != null;
 	if (tiktok_urls != null) {
 		let url = tiktok_urls[0];
+		console.log(url);
 		Quickvids(url).then(async (quickvids) => {
+			console.log(quickvids);
 			if (quickvids == undefined || quickvids.url == undefined) {
 				message.channel.send({ content: `<@${message.author.id}> | [vxtiktok](${url.replace("https://tiktok", "https://vxtiktok")})`, allowedMentions: { parse: [] }})
 				return;
