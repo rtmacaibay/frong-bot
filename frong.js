@@ -168,6 +168,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 				descriptionOutput = ""
 			}
 			let carouselArr = await ProcessTiktokCarousel(quickvids.url)
+			console.log(carouselArr);
 			if (carouselArr.length > 0) {
 				let embeds = [new Discord.EmbedBuilder().setURL(quickvids.url).setImage(carouselArr[0]).setTitle(`Download All ${carouselArr.length} Images Here`)];
 				let embedArr = carouselArr.slice(0, 4);
@@ -176,6 +177,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 				}
 				message.channel.send({ content: `<@${message.author.id}> | [${usernameOutput}](${quickvids.url})${descriptionOutput}`, embeds: embeds, allowedMentions: { parse: [] }});
 			} else {
+				console.log("here");
 				message.channel.send({ content: `<@${message.author.id}> | [${usernameOutput}](${quickvids.url})${descriptionOutput}`, allowedMentions: { parse: [] }});
 			}
 		});
