@@ -1,10 +1,12 @@
-import { Client, Collection, GatewayIntentBits } from 'discord.js';
+import { Client, Collection, IntentsBitField } from 'discord.js';
 import pg from "pg";
 const { Pool } = pg;
 
 export default class extends Client {
 	constructor(config) {
-		super({ intents: [GatewayIntentBits.MessageContent, GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildEmojisAndStickers, GatewayIntentBits.GuildInvites, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMessageTyping, GatewayIntentBits.DirectMessages, GatewayIntentBits.DirectMessageReactions, GatewayIntentBits.DirectMessageTyping] });
+		const myIntents = new IntentsBitField();
+		myIntents.add(IntentsBitField.Flags.MessageContent, IntentsBitField.Flags.Guilds, IntentsBitField.Flags.GuildMembers, IntentsBitField.Flags.GuildEmojisAndStickers, IntentsBitField.Flags.GuildInvites, IntentsBitField.Flags.GuildVoiceStates, IntentsBitField.Flags.GuildMessages, IntentsBitField.Flags.GuildMessageReactions, IntentsBitField.Flags.GuildMessageTyping, IntentsBitField.Flags.DirectMessages, IntentsBitField.Flags.DirectMessageReactions, IntentsBitField.Flags.DirectMessageTyping)
+		super({ intents: myIntents });
 
 		this.commands = new Collection();
 
