@@ -18,7 +18,7 @@
   "dependencies": {
     "discord.js": "^14.15.2",
     "dotenv": "^16.4.5",
-    "eslint": "^9.2.0",
+    "eslint": "^9.4.0",
     "node-fetch": "^3.3.2",
     "pg": "^8.11.5",
     "pluralize": "^8.0.0"
