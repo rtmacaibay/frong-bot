@@ -28,6 +28,8 @@ export default class extends Client {
 
 		this.prefix = config.prefix;
 
+		this.quickvidsBearerToken = config.quickvidsBearerToken;
+
 		this.pool = new Pool({
 			connectionString: config.db,
 			ssl: {

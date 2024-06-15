@@ -7,6 +7,7 @@ import { Commands } from './exports.js';
 
 const client = new Client(config);
 const token = client.token;
+const quickvidsToken = client.quickvidsBearerToken;
 
 for (const command of Commands) {
 	client.commands.set(command.name, command);
@@ -158,13 +159,14 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 				return;
 			}
 			let usernameOutput = `@${quickvids.username} | QuickVids.win`;
-			let descriptionOutput = ` | \"${quickvids.description}\"`;
+			let description = '';
 			if (quickvids.username == undefined || quickvids.username == "") {
 				usernameOutput = "QuickVids.win"
 			}
-			if (quickvids.description == undefined || quickvids.description == "") {
-				descriptionOutput = ""
+			if (quickvids.description != undefined || quickvids.description != "") {
+				description = quickvids.description
 			}
+			let descriptionOutput = ` | \"${description}\"`;
 			let carouselArr = await ProcessTiktokCarousel(quickvids.url)
 			if (carouselArr.length > 0) {
 				let embeds = [new Discord.EmbedBuilder().setURL(quickvids.url).setImage(carouselArr[0]).setTitle(`Download All ${carouselArr.length} Images Here`)];
@@ -202,29 +204,33 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 async function Quickvids(tiktok_url) {
 	return new Promise(function(resolve, reject) {
 		try {
-			fetch("https://api.quickvids.win/v1/shorturl/create", {
+			fetch("https://api.quickvids.win/v2/quickvids/shorturl", {
 				method: "POST",
 				body: JSON.stringify({
 					"input_text": tiktok_url,
 					"detailed": true,
 				}),
 				headers: {
-					"content-type": "application/json",
+					"Authorization": `Bearer ${quickvidsToken}`,
+					"accept": "application/json",
+					"Content-Type": "application/json",
 					"user-agent": "Frong Bot - macaibay.com",
 				}
 			}).then(async (response) => {
 				if (response.status == 200) {
 					let resp = await response.json();
-					resolve({ url: resp['quickvids_url'],  username: resp['details']['author']['username'], description: resp['details']['video']['description'] });
+					resolve({ url: resp['quickvids_url'],  username: resp['details']['author']['username'], description: resp['details']['post']['description'] });
 				} else if (response.status == 500) {
-					fetch("https://api.quickvids.win/v1/shorturl/create", {
+					fetch("https://api.quickvids.win/v2/quickvids/shorturl", {
 						method: "POST",
 						body: JSON.stringify({
 							"input_text": tiktok_url,
 							"detailed": false,
 						}),
 						headers: {
-							"content-type": "application/json",
+							"Authorization": `Bearer ${quickvidsToken}`,
+							"accept": "application/json",
+							"Content-Type": "application/json",
 							"user-agent": "Frong Bot - macaibay.com",
 						}
 					}).then(async (innerResponse) => {
