@@ -7,6 +7,7 @@ import { Commands } from './exports.js';
 
 const client = new Client(config);
 const token = client.token;
+const quickvidsToken = client.quickvidsBearerToken;
 
 for (const command of Commands) {
 	client.commands.set(command.name, command);
@@ -211,7 +212,7 @@ async function Quickvids(tiktok_url) {
 				headers: {
 					"content-type": "application/json",
 					"user-agent": "Frong Bot - macaibay.com",
-					"Authorization": `Bearer ${client.quickvidsBearerToken}`,
+					"Authorization": `Bearer ${quickvidsToken}`,
 				}
 			}).then(async (response) => {
 				if (response.status == 200) {
@@ -227,6 +228,7 @@ async function Quickvids(tiktok_url) {
 						headers: {
 							"content-type": "application/json",
 							"user-agent": "Frong Bot - macaibay.com",
+							"Authorization": `Bearer ${quickvidsToken}`,
 						}
 					}).then(async (innerResponse) => {
 						if (innerResponse.status == 200) {
