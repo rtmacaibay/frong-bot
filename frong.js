@@ -159,7 +159,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 				return;
 			}
 			let usernameOutput = `@${quickvids.username} | QuickVids.win`;
-			let descriptionOutput = ` | \"${description}\"`;
+			let descriptionOutput = ` | \"${quickvids.description}\"`;
 			if (quickvids.username == undefined || quickvids.username == "") {
 				usernameOutput = "QuickVids.win";
 			}
