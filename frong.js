@@ -159,14 +159,13 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 				return;
 			}
 			let usernameOutput = `@${quickvids.username} | QuickVids.win`;
-			let description = '';
-			if (quickvids.username == undefined || quickvids.username == "") {
-				usernameOutput = "QuickVids.win"
-			}
-			if (quickvids.description != undefined || quickvids.description != "") {
-				description = quickvids.description
-			}
 			let descriptionOutput = ` | \"${description}\"`;
+			if (quickvids.username == undefined || quickvids.username == "") {
+				usernameOutput = "QuickVids.win";
+			}
+			if (quickvids.description == undefined || quickvids.description == "") {
+				descriptionOutput = "";
+			}
 			let carouselArr = await ProcessTiktokCarousel(quickvids.url)
 			if (carouselArr.length > 0) {
 				let embeds = [new Discord.EmbedBuilder().setURL(quickvids.url).setImage(carouselArr[0]).setTitle(`Download All ${carouselArr.length} Images Here`)];
