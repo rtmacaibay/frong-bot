@@ -210,9 +210,10 @@ async function Quickvids(tiktok_url) {
 					"detailed": true,
 				}),
 				headers: {
-					"content-type": "application/json",
+					"accept": "application/json",
+					"Content-Type": "application/json",
 					"user-agent": "Frong Bot - macaibay.com",
-					Authorization: `Bearer ${quickvidsToken}`,
+					"Authorization": `Bearer ${quickvidsToken}`,
 				}
 			}).then(async (response) => {
 				if (response.status == 200) {
@@ -226,9 +227,10 @@ async function Quickvids(tiktok_url) {
 							"detailed": false,
 						}),
 						headers: {
-							"content-type": "application/json",
+							"accept": "application/json",
+							"Content-Type": "application/json",
 							"user-agent": "Frong Bot - macaibay.com",
-							Authorization: `Bearer ${quickvidsToken}`,
+							"Authorization": `Bearer ${quickvidsToken}`,
 						}
 					}).then(async (innerResponse) => {
 						if (innerResponse.status == 200) {
