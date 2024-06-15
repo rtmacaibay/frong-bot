@@ -203,7 +203,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 async function Quickvids(tiktok_url) {
 	return new Promise(function(resolve, reject) {
 		try {
-			fetch("https://api.quickvids.win/v2/shorturl", {
+			fetch("https://api.quickvids.win/v2/quickvids/shorturl", {
 				method: "POST",
 				body: JSON.stringify({
 					"input_text": tiktok_url,
@@ -219,7 +219,7 @@ async function Quickvids(tiktok_url) {
 					let resp = await response.json();
 					resolve({ url: resp['quickvids_url'],  username: resp['details']['author']['username'], description: resp['details']['video']['description'] });
 				} else if (response.status == 500) {
-					fetch("https://api.quickvids.win/v2/shorturl", {
+					fetch("https://api.quickvids.win/v2/quickvids/shorturl", {
 						method: "POST",
 						body: JSON.stringify({
 							"input_text": tiktok_url,
