@@ -216,6 +216,7 @@ async function Quickvids(tiktok_url) {
 					"Authorization": `Bearer ${quickvidsToken}`,
 				}
 			}).then(async (response) => {
+				console.log(response);
 				if (response.status == 200) {
 					let resp = await response.json();
 					resolve({ url: resp['quickvids_url'],  username: resp['details']['author']['username'], description: resp['details']['video']['description'] });
