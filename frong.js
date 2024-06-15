@@ -202,7 +202,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 async function Quickvids(tiktok_url) {
 	return new Promise(function(resolve, reject) {
 		try {
-			fetch("https://api.quickvids.win/v1/shorturl/create", {
+			fetch("https://api.quickvids.win/v2/shorturl/create", {
 				method: "POST",
 				body: JSON.stringify({
 					"input_text": tiktok_url,
