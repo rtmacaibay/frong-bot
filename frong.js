@@ -212,7 +212,7 @@ async function Quickvids(tiktok_url) {
 				headers: {
 					"content-type": "application/json",
 					"user-agent": "Frong Bot - macaibay.com",
-					"Authorization": `${quickvidsToken}`,
+					Authorization: `Bearer ${quickvidsToken}`,
 				}
 			}).then(async (response) => {
 				if (response.status == 200) {
@@ -228,7 +228,7 @@ async function Quickvids(tiktok_url) {
 						headers: {
 							"content-type": "application/json",
 							"user-agent": "Frong Bot - macaibay.com",
-							"Authorization": `${quickvidsToken}`,
+							Authorization: `Bearer ${quickvidsToken}`,
 						}
 					}).then(async (innerResponse) => {
 						if (innerResponse.status == 200) {
