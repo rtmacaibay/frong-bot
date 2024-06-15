@@ -211,6 +211,7 @@ async function Quickvids(tiktok_url) {
 				headers: {
 					"content-type": "application/json",
 					"user-agent": "Frong Bot - macaibay.com",
+					"Authorization": `Bearer ${client.quickvidsBearerToken}`
 				}
 			}).then(async (response) => {
 				if (response.status == 200) {
