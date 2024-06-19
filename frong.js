@@ -158,10 +158,10 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 				message.channel.send({ content: `<@${message.author.id}> | [vxtiktok](${url.replace("https://tiktok", "https://vxtiktok")})`, allowedMentions: { parse: [] }})
 				return;
 			}
-			let usernameOutput = `@${quickvids.username} | QuickVids.win`;
+			let usernameOutput = `@${quickvids.username} | QuickVids.app`;
 			let descriptionOutput = ` | \"${quickvids.description}\"`;
 			if (quickvids.username == undefined || quickvids.username == "") {
-				usernameOutput = "QuickVids.win";
+				usernameOutput = "QuickVids.app";
 			}
 			if (quickvids.description == undefined || quickvids.description == "") {
 				descriptionOutput = "";
@@ -203,7 +203,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 async function Quickvids(tiktok_url) {
 	return new Promise(function(resolve, reject) {
 		try {
-			fetch("https://api.quickvids.win/v2/quickvids/shorturl", {
+			fetch("https://api.quickvids.app/v2/quickvids/shorturl", {
 				method: "POST",
 				body: JSON.stringify({
 					"input_text": tiktok_url,
@@ -211,16 +211,16 @@ async function Quickvids(tiktok_url) {
 				}),
 				headers: {
 					"Authorization": `Bearer ${quickvidsToken}`,
-					"accept": "application/json",
+					"Accept": "application/json",
 					"Content-Type": "application/json",
-					"user-agent": "Frong Bot - macaibay.com",
+					"User-Agent": "Frong Bot - macaibay.com",
 				}
 			}).then(async (response) => {
 				if (response.status == 200) {
 					let resp = await response.json();
 					resolve({ url: resp['quickvids_url'],  username: resp['details']['author']['username'], description: resp['details']['post']['description'] });
 				} else if (response.status == 500) {
-					fetch("https://api.quickvids.win/v2/quickvids/shorturl", {
+					fetch("https://api.quickvids.app/v2/quickvids/shorturl", {
 						method: "POST",
 						body: JSON.stringify({
 							"input_text": tiktok_url,
@@ -228,9 +228,9 @@ async function Quickvids(tiktok_url) {
 						}),
 						headers: {
 							"Authorization": `Bearer ${quickvidsToken}`,
-							"accept": "application/json",
+							"Accept": "application/json",
 							"Content-Type": "application/json",
-							"user-agent": "Frong Bot - macaibay.com",
+							"User-Agent": "Frong Bot - macaibay.com",
 						}
 					}).then(async (innerResponse) => {
 						if (innerResponse.status == 200) {
