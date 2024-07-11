@@ -217,7 +217,7 @@ function processURLRemoveReaction(message, original_url, author) {
 			message.delete();
 		} else if (reaction.emoji.name === '🔗' && posted < 1) {
 			posted += 1;
-			message.channel.send({content: `${original_url}`, embeds: null});
+			message.channel.send({content: `${original_url}`, embeds: []});
 		}
 	});
 
