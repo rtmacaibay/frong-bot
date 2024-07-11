@@ -202,10 +202,10 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 
 function processURLRemoveReaction(message, original_url) {
 	message.react('🗑️');
-	message.react('🔗')
+	message.react('🔗');
 
 	const collectorFilter = (reaction, user) => {
-		return ['🗑️', '🔗'].includes(reaction.emoji.name) && !user.bot
+		return ['🗑️', '🔗'].includes(reaction.emoji.name) && !user.bot;
 	}
 
 	message.awaitReactions({ filter: collectorFilter, time: 900_000, errors: ['time']})
