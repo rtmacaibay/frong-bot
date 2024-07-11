@@ -208,20 +208,20 @@ function processURLRemoveReaction(message, original_url) {
 		return ['🗑️', '🔗'].includes(reaction.emoji.name) && !user.bot;
 	}
 
-	message.awaitReactions({ filter: collectorFilter, max: 1, time: 900_000, errors: ['time']})
-		.then(collected => {
-			const reaction = collected.first();
+	const collector = message.createReactionCollector({ filter: collectorFilter, time: 900_000});
 
-			if (reaction.emoji.name === '🗑️') {
-				message.delete();
-			} else {
-				message.channel.send(`${original_url}`).then((msg) => msg.suppressEmbeds(true));
-			}
-		})
-		.catch(() => {
-			message.reactions.removeAll()
-				.catch(error => console.error('Failed to clear reactions:', error));
-		})
+	collector.on('collect', (reaction, user) => {
+		if (reaction.emoji.name === '🗑️') {
+			message.delete();
+		} else {
+			message.channel.send(`${original_url}`).then((msg) => msg.suppressEmbeds(true));
+		}
+	});
+
+	collector.on('end', () => {
+		message.reactions.removeAll()
+			.catch(error => console.error('Failed to clear reactions:', error));
+	});
 }
 
 async function Quickvids(tiktok_url) {
