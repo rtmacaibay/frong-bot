@@ -155,7 +155,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 		let url = tiktok_urls[0];
 		Quickvids(url).then(async (quickvids) => {
 			if (quickvids == undefined || quickvids.url == undefined) {
-				message.channel.send({ content: `<@${message.author.id}> | [vxtiktok](${url.replace("https://tiktok", "https://vxtiktok")})`, allowedMentions: { parse: [] }})
+				message.channel.send({ content: `<@${message.author.id}> | [vxtiktok](${url.replace("https://tiktok", "https://vxtiktok")})`, allowedMentions: { parse: [] }}).then((msg) => processURLRemoveReaction(msg));
 				return;
 			}
 			let usernameOutput = `@${quickvids.username} | QuickVids.app`;
@@ -173,143 +173,51 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 				for (let i = 1; i < embedArr.length; i++) {
 					embeds.push(new Discord.EmbedBuilder().setURL(quickvids.url).setImage(embedArr[i]));
 				}
-				message.channel.send({ content: `<@${message.author.id}> | [${usernameOutput}](${quickvids.url})${descriptionOutput}`, embeds: embeds, allowedMentions: { parse: [] }})
-					.then((msg) => {
-						msg.react('🗑️');
-
-						const collectorFilter = (reaction, user) => {
-							return ['🗑️'].includes(reaction.emoji.name) && !user.bot
-						}
-
-						msg.awaitReactions({ filter: collectorFilter, max: 1, time: 900_000, errors: ['time']})
-							.then(collected => {
-								const reaction = collected.first();
-
-								if (reaction.emoji.name === '🗑️') {
-									msg.delete();
-								}
-							});
-					});
+				message.channel.send({ content: `<@${message.author.id}> | [${usernameOutput}](${quickvids.url})${descriptionOutput}`, embeds: embeds, allowedMentions: { parse: [] }}).then((msg) => processURLRemoveReaction(msg));
 			} else {
-				message.channel.send({ content: `<@${message.author.id}> | [${usernameOutput}](${quickvids.url})${descriptionOutput}`, allowedMentions: { parse: [] }})
-					.then((msg) => {
-						msg.react('🗑️');
-
-						const collectorFilter = (reaction, user) => {
-							return ['🗑️'].includes(reaction.emoji.name) && !user.bot
-						}
-
-						msg.awaitReactions({ filter: collectorFilter, max: 1, time: 900_000, errors: ['time']})
-							.then(collected => {
-								const reaction = collected.first();
-
-								if (reaction.emoji.name === '🗑️') {
-									msg.delete();
-								}
-							});
-					});
+				message.channel.send({ content: `<@${message.author.id}> | [${usernameOutput}](${quickvids.url})${descriptionOutput}`, allowedMentions: { parse: [] }}).then((msg) => processURLRemoveReaction(msg));
 			}
 		});
 	} else if (instagram_urls != null) {
 		let url = instagram_urls[0];
 		if (url.includes("reel")) {
-			message.channel.send({ content: `<@${message.author.id}> | [d.ddinstagram](${url.replace("https://instagram.com/", "https://d.ddinstagram.com/")})`, allowedMentions: { parse: [] }})
-				.then((msg) => {
-					msg.react('🗑️');
-
-					const collectorFilter = (reaction, user) => {
-						return ['🗑️'].includes(reaction.emoji.name) && !user.bot
-					}
-
-					msg.awaitReactions({ filter: collectorFilter, max: 1, time: 900_000, errors: ['time']})
-						.then(collected => {
-							const reaction = collected.first();
-
-							if (reaction.emoji.name === '🗑️') {
-								msg.delete();
-							}
-						});
-				});
+			message.channel.send({ content: `<@${message.author.id}> | [d.ddinstagram](${url.replace("https://instagram.com/", "https://d.ddinstagram.com/")})`, allowedMentions: { parse: [] }}).then((msg) => processURLRemoveReaction(msg));
 		} else {
-			message.channel.send({ content: `<@${message.author.id}> | [ddinstagram](${url.replace("https://instagram.com/", "https://ddinstagram.com/")})`, allowedMentions: { parse: [] }})
-				.then((msg) => {
-					msg.react('🗑️');
-
-					const collectorFilter = (reaction, user) => {
-						return ['🗑️'].includes(reaction.emoji.name) && !user.bot
-					}
-
-					msg.awaitReactions({ filter: collectorFilter, max: 1, time: 900_000, errors: ['time']})
-						.then(collected => {
-							const reaction = collected.first();
-
-							if (reaction.emoji.name === '🗑️') {
-								msg.delete();
-							}
-						});
-				});
+			message.channel.send({ content: `<@${message.author.id}> | [ddinstagram](${url.replace("https://instagram.com/", "https://ddinstagram.com/")})`, allowedMentions: { parse: [] }}).then((msg) => processURLRemoveReaction(msg));
 		}
 	} else if (twitter_urls != null) {
 		let url = twitter_urls[0];
-		message.channel.send({ content: `<@${message.author.id}> | [vxtwitter](${url.replace("https://twitter.com/", "https://vxtwitter.com/")})`, allowedMentions: { parse: [] }})
-			.then((msg) => {
-				msg.react('🗑️');
-
-				const collectorFilter = (reaction, user) => {
-					return ['🗑️'].includes(reaction.emoji.name) && !user.bot
-				}
-
-				msg.awaitReactions({ filter: collectorFilter, max: 1, time: 900_000, errors: ['time']})
-					.then(collected => {
-						const reaction = collected.first();
-
-						if (reaction.emoji.name === '🗑️') {
-							msg.delete();
-						}
-					});
-			});
+		message.channel.send({ content: `<@${message.author.id}> | [vxtwitter](${url.replace("https://twitter.com/", "https://vxtwitter.com/")})`, allowedMentions: { parse: [] }}).then((msg) => processURLRemoveReaction(msg));
 	} else if (reddit_urls != null) {
 		let url = reddit_urls[0];
 		let { streamable_url, description } = await ProcessRedditURL(url);
 		if (url.match(streamable_url)) {
-			message.channel.send({ content: `<@${message.author.id}> | [rxddit](${url.replace("reddit.com/", "rxddit.com/").replace("redd.it/", "rxddit.com/")}) | ${description}`, allowedMentions: { parse: [] }})
-				.then((msg) => {
-					msg.react('🗑️');
-
-					const collectorFilter = (reaction, user) => {
-						return ['🗑️'].includes(reaction.emoji.name) && !user.bot
-					}
-
-					msg.awaitReactions({ filter: collectorFilter, max: 1, time: 900_000, errors: ['time']})
-						.then(collected => {
-							const reaction = collected.first();
-
-							if (reaction.emoji.name === '🗑️') {
-								msg.delete();
-							}
-						});
-				});
+			message.channel.send({ content: `<@${message.author.id}> | [rxddit](${url.replace("reddit.com/", "rxddit.com/").replace("redd.it/", "rxddit.com/")}) | ${description}`, allowedMentions: { parse: [] }}).then((msg) => processURLRemoveReaction(msg));
 		} else {
-			message.channel.send({ content: `<@${message.author.id}> | [streamable](${streamable_url})`, allowedMentions: { parse: [] }})
-				.then((msg) => {
-					msg.react('🗑️');
-
-					const collectorFilter = (reaction, user) => {
-						return ['🗑️'].includes(reaction.emoji.name) && !user.bot
-					}
-
-					msg.awaitReactions({ filter: collectorFilter, max: 1, time: 900_000, errors: ['time']})
-						.then(collected => {
-							const reaction = collected.first();
-
-							if (reaction.emoji.name === '🗑️') {
-								msg.delete();
-							}
-						});
-				});
+			message.channel.send({ content: `<@${message.author.id}> | [streamable](${streamable_url})`, allowedMentions: { parse: [] }}).then((msg) => processURLRemoveReaction(msg));
 		}
 	}
 	if (seen) { message.delete(); }
+}
+
+function processURLRemoveReaction(message) {
+	message.react('🗑️');
+
+	const collectorFilter = (reaction, user) => {
+		return ['🗑️'].includes(reaction.emoji.name) && !user.bot
+	}
+
+	message.awaitReactions({ filter: collectorFilter, max: 1, time: 900_000, errors: ['time']})
+		.then(collected => {
+			const reaction = collected.first();
+
+			if (reaction.emoji.name === '🗑️') {
+				message.delete();
+			}
+		})
+		.catch(() => {
+			msg.reactions.removeAll();
+		});
 }
 
 async function Quickvids(tiktok_url) {
