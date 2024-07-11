@@ -216,9 +216,9 @@ function processURLRemoveReaction(message) {
 			}
 		})
 		.catch(() => {
-			message.reactions.removeAll()
-				.catch();
-		});
+			message.reactions.removeAll();
+		})
+		.catch();
 }
 
 async function Quickvids(tiktok_url) {
