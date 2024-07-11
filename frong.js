@@ -205,7 +205,7 @@ function processURLRemoveReaction(message, original_url) {
 	message.react('🔗')
 
 	const collectorFilter = (reaction, user) => {
-		return ['🗑️'].includes(reaction.emoji.name) && !user.bot
+		return ['🗑️', '🔗'].includes(reaction.emoji.name) && !user.bot
 	}
 
 	message.awaitReactions({ filter: collectorFilter, time: 900_000, errors: ['time']})
