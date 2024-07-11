@@ -220,7 +220,7 @@ function processURLRemoveReaction(message, original_url) {
 
 	collector.on('end', () => {
 		message.reactions.removeAll()
-			.catch(error => console.error('Failed to clear reactions:', error));
+			.catch(error => console.error('Failed to clear reactions:', error.message));
 	});
 }
 
