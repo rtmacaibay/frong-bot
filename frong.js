@@ -177,8 +177,8 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 					.then((msg) => {
 						msg.react('🗑️');
 
-						const collectorFilter = (reaction) => {
-							return ['🗑️'].includes(reaction.emoji.name) && !interaction.user.bot
+						const collectorFilter = (reaction, user) => {
+							return ['🗑️'].includes(reaction.emoji.name) && !user.bot
 						}
 
 						msg.awaitReactions({ filter: collectorFilter, max: 1, time: 900_000, errors: ['time']})
@@ -195,8 +195,8 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 					.then((msg) => {
 						msg.react('🗑️');
 
-						const collectorFilter = (reaction) => {
-							return ['🗑️'].includes(reaction.emoji.name) && !interaction.user.bot
+						const collectorFilter = (reaction, user) => {
+							return ['🗑️'].includes(reaction.emoji.name) && !user.bot
 						}
 
 						msg.awaitReactions({ filter: collectorFilter, max: 1, time: 900_000, errors: ['time']})
@@ -217,8 +217,8 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 				.then((msg) => {
 					msg.react('🗑️');
 
-					const collectorFilter = (reaction) => {
-						return ['🗑️'].includes(reaction.emoji.name) && !interaction.user.bot
+					const collectorFilter = (reaction, user) => {
+						return ['🗑️'].includes(reaction.emoji.name) && !user.bot
 					}
 
 					msg.awaitReactions({ filter: collectorFilter, max: 1, time: 900_000, errors: ['time']})
@@ -235,8 +235,8 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 				.then((msg) => {
 					msg.react('🗑️');
 
-					const collectorFilter = (reaction) => {
-						return ['🗑️'].includes(reaction.emoji.name) && !interaction.user.bot
+					const collectorFilter = (reaction, user) => {
+						return ['🗑️'].includes(reaction.emoji.name) && !user.bot
 					}
 
 					msg.awaitReactions({ filter: collectorFilter, max: 1, time: 900_000, errors: ['time']})
@@ -255,8 +255,8 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 			.then((msg) => {
 				msg.react('🗑️');
 
-				const collectorFilter = (reaction) => {
-					return ['🗑️'].includes(reaction.emoji.name) && !interaction.user.bot
+				const collectorFilter = (reaction, user) => {
+					return ['🗑️'].includes(reaction.emoji.name) && !user.bot
 				}
 
 				msg.awaitReactions({ filter: collectorFilter, max: 1, time: 900_000, errors: ['time']})
@@ -276,8 +276,8 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 				.then((msg) => {
 					msg.react('🗑️');
 
-					const collectorFilter = (reaction) => {
-						return ['🗑️'].includes(reaction.emoji.name) && !interaction.user.bot
+					const collectorFilter = (reaction, user) => {
+						return ['🗑️'].includes(reaction.emoji.name) && !user.bot
 					}
 
 					msg.awaitReactions({ filter: collectorFilter, max: 1, time: 900_000, errors: ['time']})
@@ -294,8 +294,8 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 				.then((msg) => {
 					msg.react('🗑️');
 
-					const collectorFilter = (reaction) => {
-						return ['🗑️'].includes(reaction.emoji.name) && !interaction.user.bot
+					const collectorFilter = (reaction, user) => {
+						return ['🗑️'].includes(reaction.emoji.name) && !user.bot
 					}
 
 					msg.awaitReactions({ filter: collectorFilter, max: 1, time: 900_000, errors: ['time']})
