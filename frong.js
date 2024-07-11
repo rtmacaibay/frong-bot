@@ -216,9 +216,9 @@ function processURLRemoveReaction(message) {
 			}
 		})
 		.catch(() => {
-			message.reactions.removeAll();
+			message.reactions.removeAll()
+				.catch(error => console.error('Failed to clear reactions:', error));
 		})
-		.catch();
 }
 
 async function Quickvids(tiktok_url) {
