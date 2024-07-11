@@ -216,7 +216,7 @@ function processURLRemoveReaction(message) {
 			}
 		})
 		.catch(() => {
-			msg.reactions.removeAll();
+			message.reactions.removeAll();
 		});
 }
 
