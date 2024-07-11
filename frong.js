@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { Discord, MessageFlags } from 'discord.js';
+import Discord from 'discord.js';
 import Client from './client/client.js';
 import { config } from './config.js';
 import fetch from 'node-fetch';
@@ -217,7 +217,7 @@ function processURLRemoveReaction(message, original_url, author) {
 			message.delete();
 		} else if (reaction.emoji.name === '🔗' && posted < 1) {
 			posted += 1;
-			message.channel.send({content: `${original_url}`, flags: [MessageFlags.SuppressEmbeds]});
+			message.channel.send({content: `${original_url}`, flags: [Discord.MessageFlags.SuppressEmbeds]});
 		}
 	});
 
