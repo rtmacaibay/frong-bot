@@ -233,10 +233,8 @@ function processURLReaction(message, original_url, author, delete_button, link_b
 		} else if (selection === 'link' && posted < 1) {
 			posted += 1;
 			message.channel.send({content: `${original_url}`, flags: [Discord.MessageFlags.SuppressEmbeds]});
-			interaction.update({
-				content: 'Link posted',
-				components: [],
-			});
+			interaction.deferUpdate()
+				.catch(console.error);
 		}
 	});
 
