@@ -155,12 +155,12 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 	const delete_button = new Discord.ButtonBuilder()
 		.setCustomId('delete')
 		.setLabel('🗑️')
-		.setStyle(ButtonStyle.Danger);
+		.setStyle(Discord.ButtonStyle.Danger);
 
 	const link_button = new Discord.ButtonBuilder()
 		.setCustomId('link')
 		.setLabel('🔗')
-		.setStyle(ButtonStyle.Primary);
+		.setStyle(Discord.ButtonStyle.Primary);
 
 	const row = new ActionRowBuilder().addComponents(delete_button, link_button);
 
