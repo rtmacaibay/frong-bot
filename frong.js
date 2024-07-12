@@ -190,19 +190,19 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 	} else if (instagram_urls != null) {
 		let original_url = instagram_urls[0];
 		if (original_url.includes("reel")) {
-			let processed_url = url.replace("https://instagram.com/", "https://d.ddinstagram.com/");
+			let processed_url = original_url.replace("https://instagram.com/", "https://d.ddinstagram.com/");
 			let row = getActionRow(processed_url);
 			message.channel.send({ content: `<@${message.author.id}> | [d.ddinstagram](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 				.then((msg) => processURLReaction(msg, original_url, message.author));
 		} else {
-			let processed_url = url.replace("https://instagram.com/", "https://ddinstagram.com/");
+			let processed_url = original_url.replace("https://instagram.com/", "https://ddinstagram.com/");
 			let row = getActionRow(processed_url);
 			message.channel.send({ content: `<@${message.author.id}> | [ddinstagram](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 				.then((msg) => processURLReaction(msg, original_url, message.author));
 		}
 	} else if (twitter_urls != null) {
 		let original_url = twitter_urls[0];
-		let processed_url = url.replace("https://twitter.com/", "https://vxtwitter.com/");
+		let processed_url = original_url.replace("https://twitter.com/", "https://vxtwitter.com/");
 		let row = getActionRow(processed_url);
 		message.channel.send({ content: `<@${message.author.id}> | [vxtwitter](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 			.then((msg) => processURLReaction(msg, original_url, message.author));
@@ -210,7 +210,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 		let original_url = reddit_urls[0];
 		let { streamable_url, description } = await ProcessRedditURL(original_url);
 		if (original_url.match(streamable_url)) {
-			let processed_url = url.replace("reddit.com/", "rxddit.com/").replace("redd.it/", "rxddit.com/");
+			let processed_url = original_url.replace("reddit.com/", "rxddit.com/").replace("redd.it/", "rxddit.com/");
 			let row = getActionRow(processed_url);
 			message.channel.send({ content: `<@${message.author.id}> | [rxddit](${processed_url}) | ${description}`, allowedMentions: { parse: [] }, components: [row] })
 				.then((msg) => processURLReaction(msg, original_url, message.author));
