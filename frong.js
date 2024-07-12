@@ -224,11 +224,11 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 function processURLReaction(message, original_url, author, delete_button, link_button) {
 	let posted = 0;
 
-	const collector = message.createMessageComponentCollector({ componentType: Discord.ComponentType.ActionRow, time: 3_600_000 });
+	const collector = message.createMessageComponentCollector({ componentType: Discord.ComponentType.Button, time: 3_600_000 });
 
-	collector.on('collect', async i => {
-		const selection = i.customId;
-		if (selection === 'delete' && i.user.id === author.id) {
+	collector.on('collect', async interaction => {
+		const selection = interaction.customId;
+		if (selection === 'delete' && interaction.user.id === author.id) {
 			message.delete();
 		} else if (selection === 'link' && posted < 1) {
 			posted += 1;
