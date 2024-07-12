@@ -384,6 +384,7 @@ async function ProcessRedditURL(url) {
 				}
 			}).then(async (response) => {
 				let description = "";
+				console.log(response);
 				if (response.status == 200) {
 					let resp = await response.text();
 					if (resp.includes("\"target_url_domain\": \"streamable.com\"")) {
