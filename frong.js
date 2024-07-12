@@ -241,13 +241,8 @@ function processURLReaction(message, original_url, author, delete_button, link_b
 		}
 	});
 
-	collector.on('end', interaction => {
-		delete_button.setDisabled(true);
-		link_button.setDisabled(true);
-		interaction.update({
-			content: message.content,
-			components: [],
-		});
+	collector.on('end', () => {
+		message.edit({ components: [] });
 	});
 }
 
