@@ -224,7 +224,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 function processURLReaction(message, original_url, author, delete_button, link_button) {
 	let posted = 0;
 
-	const collector = message.createMessageComponentCollector({ componentType: Discord.ComponentType.Button, time: 3_600_000 });
+	const collector = message.createMessageComponentCollector({ componentType: Discord.ComponentType.Button, time: 60_000 });
 
 	collector.on('collect', interaction => {
 		const selection = interaction.customId;
@@ -241,9 +241,13 @@ function processURLReaction(message, original_url, author, delete_button, link_b
 		}
 	});
 
-	collector.on('end', () => {
+	collector.on('end', interaction => {
 		delete_button.setDisabled(true);
 		link_button.setDisabled(true);
+		interaction.update({
+			content: message.content,
+			components: [],
+		});
 	});
 }
 
