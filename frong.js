@@ -222,7 +222,9 @@ function processURLRemoveReaction(message, original_url, author) {
 	});
 
 	collector.on('end', () => {
-		message.reactions.removeAll()
+		message.reactions.cache.get('🗑️').remove()
+			.catch(error => console.error('Failed to clear reactions:', error.message));
+		message.reactions.cache.get('🔗').remove()
 			.catch(error => console.error('Failed to clear reactions:', error.message));
 	});
 }
