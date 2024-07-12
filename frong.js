@@ -152,24 +152,15 @@ function ExtractURLs(message) {
 async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, reddit_urls) {
 	let seen = tiktok_urls != null || instagram_urls != null || twitter_urls != null || reddit_urls != null;
 
-	const delete_button = new Discord.ButtonBuilder()
-		.setCustomId('delete')
-		.setLabel('🗑️')
-		.setStyle(Discord.ButtonStyle.Danger);
-
-	const link_button = new Discord.ButtonBuilder()
-		.setCustomId('link')
-		.setLabel('🔗')
-		.setStyle(Discord.ButtonStyle.Primary);
-
-	const row = new Discord.ActionRowBuilder().addComponents(delete_button, link_button);
-
 	if (tiktok_urls != null) {
-		let url = tiktok_urls[0];
-		Quickvids(url).then(async (quickvids) => {
+		let original_url = tiktok_urls[0];
+		Quickvids(original_url).then(async (quickvids) => {
 			if (quickvids == undefined || quickvids.url == undefined) {
-				message.channel.send({ content: `<@${message.author.id}> | [vxtiktok](${url.replace("https://tiktok", "https://vxtiktok")})`, allowedMentions: { parse: [] }, components: [row] })
-					.then((msg) => processURLReaction(msg, url, message.author, delete_button, link_button));
+				let processed_url = original_url.replace("https://tiktok", "https://vxtiktok");
+				let row = getActionRow(processed_url);
+
+				message.channel.send({ content: `<@${message.author.id}> | [vxtiktok](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
+					.then((msg) => processURLReaction(msg, original_url, message.author));
 				return;
 			}
 			let usernameOutput = `@${quickvids.username} | QuickVids.app`;
@@ -180,59 +171,89 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 			if (quickvids.description == undefined || quickvids.description == "") {
 				descriptionOutput = "";
 			}
-			let carouselArr = await ProcessTiktokCarousel(quickvids.url)
+			let processed_url = quickvids.url;
+			let row = getActionRow(processed_url);
+			let carouselArr = await ProcessTiktokCarousel(processed_url)
 			if (carouselArr.length > 0) {
-				let embeds = [new Discord.EmbedBuilder().setURL(quickvids.url).setImage(carouselArr[0]).setTitle(`Download All ${carouselArr.length} Images Here`)];
+				let embeds = [new Discord.EmbedBuilder().setURL(processed_url).setImage(carouselArr[0]).setTitle(`Download All ${carouselArr.length} Images Here`)];
 				let embedArr = carouselArr.slice(0, 4);
 				for (let i = 1; i < embedArr.length; i++) {
-					embeds.push(new Discord.EmbedBuilder().setURL(quickvids.url).setImage(embedArr[i]));
+					embeds.push(new Discord.EmbedBuilder().setURL(processed_url).setImage(embedArr[i]));
 				}
-				message.channel.send({ content: `<@${message.author.id}> | [${usernameOutput}](${quickvids.url})${descriptionOutput}`, embeds: embeds, allowedMentions: { parse: [] }, components: [row] })
-					.then((msg) => processURLReaction(msg, url, message.author, delete_button, link_button));
+				message.channel.send({ content: `<@${message.author.id}> | [${usernameOutput}](${processed_url})${descriptionOutput}`, embeds: embeds, allowedMentions: { parse: [] }, components: [row] })
+					.then((msg) => processURLReaction(msg, original_url, message.author));
 			} else {
-				message.channel.send({ content: `<@${message.author.id}> | [${usernameOutput}](${quickvids.url})${descriptionOutput}`, allowedMentions: { parse: [] }, components: [row] })
-					.then((msg) => processURLReaction(msg, url, message.author, delete_button, link_button));
+				message.channel.send({ content: `<@${message.author.id}> | [${usernameOutput}](${processed_url})${descriptionOutput}`, allowedMentions: { parse: [] }, components: [row] })
+					.then((msg) => processURLReaction(msg, original_url, message.author));
 			}
 		});
 	} else if (instagram_urls != null) {
-		let url = instagram_urls[0];
-		if (url.includes("reel")) {
-			message.channel.send({ content: `<@${message.author.id}> | [d.ddinstagram](${url.replace("https://instagram.com/", "https://d.ddinstagram.com/")})`, allowedMentions: { parse: [] }, components: [row] })
-				.then((msg) => processURLReaction(msg, url, message.author, delete_button, link_button));
+		let original_url = instagram_urls[0];
+		if (original_url.includes("reel")) {
+			let processed_url = original_url.replace("https://instagram.com/", "https://d.ddinstagram.com/");
+			let row = getActionRow(processed_url);
+			message.channel.send({ content: `<@${message.author.id}> | [d.ddinstagram](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
+				.then((msg) => processURLReaction(msg, original_url, message.author));
 		} else {
-			message.channel.send({ content: `<@${message.author.id}> | [ddinstagram](${url.replace("https://instagram.com/", "https://ddinstagram.com/")})`, allowedMentions: { parse: [] }, components: [row] })
-				.then((msg) => processURLReaction(msg, url, message.author, delete_button, link_button));
+			let processed_url = original_url.replace("https://instagram.com/", "https://ddinstagram.com/");
+			let row = getActionRow(processed_url);
+			message.channel.send({ content: `<@${message.author.id}> | [ddinstagram](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
+				.then((msg) => processURLReaction(msg, original_url, message.author));
 		}
 	} else if (twitter_urls != null) {
-		let url = twitter_urls[0];
-		message.channel.send({ content: `<@${message.author.id}> | [vxtwitter](${url.replace("https://twitter.com/", "https://vxtwitter.com/")})`, allowedMentions: { parse: [] }, components: [row] })
-			.then((msg) => processURLReaction(msg, url, message.author, delete_button, link_button));
+		let original_url = twitter_urls[0];
+		let processed_url = original_url.replace("https://twitter.com/", "https://vxtwitter.com/");
+		let row = getActionRow(processed_url);
+		message.channel.send({ content: `<@${message.author.id}> | [vxtwitter](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
+			.then((msg) => processURLReaction(msg, original_url, message.author));
 	} else if (reddit_urls != null) {
-		let url = reddit_urls[0];
-		let { streamable_url, description } = await ProcessRedditURL(url);
-		if (url.match(streamable_url)) {
-			message.channel.send({ content: `<@${message.author.id}> | [rxddit](${url.replace("reddit.com/", "rxddit.com/").replace("redd.it/", "rxddit.com/")}) | ${description}`, allowedMentions: { parse: [] }, components: [row] })
-				.then((msg) => processURLReaction(msg, url, message.author, delete_button, link_button));
+		let original_url = reddit_urls[0];
+		let { streamable_url, description } = await ProcessRedditURL(original_url);
+		if (original_url.match(streamable_url)) {
+			let processed_url = original_url.replace("reddit.com/", "rxddit.com/").replace("redd.it/", "rxddit.com/");
+			let row = getActionRow(original_url);
+			message.channel.send({ content: `<@${message.author.id}> | [rxddit](${processed_url}) | ${description}`, allowedMentions: { parse: [] }, components: [row] })
+				.then((msg) => processURLReaction(msg, original_url, message.author));
 		} else {
+			let row = getActionRow(streamable_url);
 			message.channel.send({ content: `<@${message.author.id}> | [streamable](${streamable_url})`, allowedMentions: { parse: [] }, components: [row] })
-				.then((msg) => processURLReaction(msg, url, message.author, delete_button, link_button));
+				.then((msg) => processURLReaction(msg, original_url, message.author));
 		}
 	}
 	if (seen) { message.delete(); }
 }
 
-function processURLReaction(message, original_url, author, delete_button, link_button) {
+function getActionRow(processed_url) {
+	const delete_button = new Discord.ButtonBuilder()
+		.setCustomId('delete')
+		.setLabel('🗑️')
+		.setStyle(Discord.ButtonStyle.Danger);
+
+	const link_button = new Discord.ButtonBuilder()
+		.setLabel('🔗')
+		.setURL(processed_url)
+		.setStyle(Discord.ButtonStyle.Link);
+
+	const original_button = new Discord.ButtonBuilder()
+		.setCustomId('original')
+		.setLabel('See Original URL')
+		.setStyle(Discord.ButtonStyle.Primary);
+
+	return new Discord.ActionRowBuilder().addComponents(link_button, delete_button, original_button);
+}
+
+function processURLReaction(message, original_url, author) {
 	let posted = 0;
 
-	const collector = message.createMessageComponentCollector({ componentType: Discord.ComponentType.Button, time: 3_600_000 });
+	const collector = message.createMessageComponentCollector({ componentType: Discord.ComponentType.Button, time: 60_000 });
 
 	collector.on('collect', interaction => {
 		const selection = interaction.customId;
 		if (selection === 'delete' && interaction.user.id === author.id) {
 			message.delete();
-		} else if (selection === 'link' && posted < 1) {
+		} else if (selection === 'original' && posted < 1) {
 			posted += 1;
-			message.channel.send({content: `${original_url}`, flags: [Discord.MessageFlags.SuppressEmbeds]});
+			message.channel.send({ content: `<@${message.author.id}> | Original Link: ${original_url}`, flags: [Discord.MessageFlags.SuppressEmbeds], allowedMentions: { parse: [] } });
 			interaction.deferUpdate()
 				.catch(console.error);
 		} else {
@@ -242,8 +263,7 @@ function processURLReaction(message, original_url, author, delete_button, link_b
 	});
 
 	collector.on('end', () => {
-		delete_button.setDisabled(true);
-		link_button.setDisabled(true);
+		message.edit({ components: [] });
 	});
 }
 
@@ -364,6 +384,7 @@ async function ProcessRedditURL(url) {
 				}
 			}).then(async (response) => {
 				let description = "";
+				console.log(response);
 				if (response.status == 200) {
 					let resp = await response.text();
 					if (resp.includes("\"target_url_domain\": \"streamable.com\"")) {
