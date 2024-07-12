@@ -224,7 +224,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 function processURLReaction(message, original_url, author, delete_button, link_button) {
 	let posted = 0;
 
-	const collector = message.createMessageComponentCollector({ componentType: Discord.ComponentType.StringSelect, time: 3_600_000 });
+	const collector = message.createMessageComponentCollector({ componentType: Discord.ComponentType.ActionRow, time: 3_600_000 });
 
 	collector.on('collect', async i => {
 		const selection = i.values[0];
