@@ -208,7 +208,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 			.then((msg) => processURLReaction(msg, original_url, message.author));
 	} else if (reddit_urls != null) {
 		let original_url = reddit_urls[0];
-		let { streamable_url, description } = await ProcessRedditURL(url);
+		let { streamable_url, description } = await ProcessRedditURL(original_url);
 		if (original_url.match(streamable_url)) {
 			let processed_url = url.replace("reddit.com/", "rxddit.com/").replace("redd.it/", "rxddit.com/");
 			let row = getActionRow(processed_url);
