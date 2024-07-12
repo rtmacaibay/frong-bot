@@ -211,7 +211,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 		let { streamable_url, description } = await ProcessRedditURL(original_url);
 		if (original_url.match(streamable_url)) {
 			let processed_url = original_url.replace("reddit.com/", "rxddit.com/").replace("redd.it/", "rxddit.com/");
-			let row = getActionRow(processed_url);
+			let row = getActionRow(original_url);
 			message.channel.send({ content: `<@${message.author.id}> | [rxddit](${processed_url}) | ${description}`, allowedMentions: { parse: [] }, components: [row] })
 				.then((msg) => processURLReaction(msg, original_url, message.author));
 		} else {
