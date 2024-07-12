@@ -259,7 +259,9 @@ function processURLReaction(message, original_url, author) {
 				.setLabel('🗑️')
 				.setStyle(Discord.ButtonStyle.Danger);
 
-			message.channel.send({ content: `<@${author.id}> | Original Link: ${original_url}`, flags: [Discord.MessageFlags.SuppressEmbeds], allowedMentions: { parse: [] }, components: [delete_button] })
+			const row = new Discord.ActionRowBuilder().addComponents(delete_button);
+
+			message.channel.send({ content: `<@${author.id}> | Original Link: ${original_url}`, flags: [Discord.MessageFlags.SuppressEmbeds], allowedMentions: { parse: [] }, components: [row] })
 				.then((msg) => {
 					const collector = msg.createMessageComponentCollector({ componentType: Discord.ComponentType.Button, time: 60_000 });
 
