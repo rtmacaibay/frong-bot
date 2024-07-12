@@ -280,9 +280,9 @@ function processURLReaction(message, original_url, author) {
 		}
 	});
 
-	collector.on('end', reason => {
-		console.log(reason);
-		message.edit({ components: [] });
+	collector.on('end', () => {
+		message.edit({ components: [] })
+			.catch(error => console.error('Tried editing message:', error.message));
 	});
 }
 
