@@ -162,7 +162,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 		.setLabel('🔗')
 		.setStyle(Discord.ButtonStyle.Primary);
 
-	const row = new ActionRowBuilder().addComponents(delete_button, link_button);
+	const row = new Discord.ActionRowBuilder().addComponents(delete_button, link_button);
 
 	if (tiktok_urls != null) {
 		let url = tiktok_urls[0];
