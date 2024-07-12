@@ -235,6 +235,9 @@ function processURLReaction(message, original_url, author, delete_button, link_b
 			message.channel.send({content: `${original_url}`, flags: [Discord.MessageFlags.SuppressEmbeds]});
 			interaction.deferUpdate()
 				.catch(console.error);
+		} else {
+			interaction.deferUpdate()
+				.catch(console.error);
 		}
 	});
 
