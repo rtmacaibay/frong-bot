@@ -253,7 +253,23 @@ function processURLReaction(message, original_url, author) {
 			message.delete();
 		} else if (selection === 'original' && posted < 1) {
 			posted += 1;
-			message.channel.send({ content: `<@${author.id}> | Original Link: ${original_url}`, flags: [Discord.MessageFlags.SuppressEmbeds], allowedMentions: { parse: [] } });
+
+			const delete_button = new Discord.ButtonBuilder()
+				.setCustomId('delete')
+				.setLabel('🗑️')
+				.setStyle(Discord.ButtonStyle.Danger);
+
+			message.channel.send({ content: `<@${author.id}> | Original Link: ${original_url}`, flags: [Discord.MessageFlags.SuppressEmbeds], allowedMentions: { parse: [] }, components: [delete_button] })
+				.then((msg) => {
+					const collector = msg.createMessageComponentCollector({ componentType: Discord.ComponentType.Button, time: 60_000 });
+
+					collector.on('collect', interaction => {
+						const selection = interaction.customId;
+						if (selection === 'delete' && interaction.user.id === author.id) {
+							msg.delete();
+						}
+					});
+				});
 			interaction.deferUpdate()
 				.catch(console.error);
 		} else {
