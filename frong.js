@@ -226,7 +226,7 @@ function processURLReaction(message, original_url, author, delete_button, link_b
 
 	const collector = message.createMessageComponentCollector({ componentType: Discord.ComponentType.Button, time: 3_600_000 });
 
-	collector.on('collect', async interaction => {
+	collector.on('collect', interaction => {
 		const selection = interaction.customId;
 		if (selection === 'delete' && interaction.user.id === author.id) {
 			message.delete();
