@@ -253,7 +253,7 @@ function processURLReaction(message, original_url, author) {
 			message.delete();
 		} else if (selection === 'original' && posted < 1) {
 			posted += 1;
-			message.channel.send({ content: `<@${message.author.id}> | Original Link: ${original_url}`, flags: [Discord.MessageFlags.SuppressEmbeds], allowedMentions: { parse: [] } });
+			message.channel.send({ content: `<@${author.id}> | Original Link: ${original_url}`, flags: [Discord.MessageFlags.SuppressEmbeds], allowedMentions: { parse: [] } });
 			interaction.deferUpdate()
 				.catch(console.error);
 		} else {
@@ -262,7 +262,8 @@ function processURLReaction(message, original_url, author) {
 		}
 	});
 
-	collector.on('end', () => {
+	collector.on('end', reason => {
+		console.log(reason);
 		message.edit({ components: [] });
 	});
 }
