@@ -227,10 +227,10 @@ function processURLReaction(message, original_url, author, delete_button, link_b
 	const collector = message.createMessageComponentCollector({ componentType: Discord.ComponentType.ActionRow, time: 3_600_000 });
 
 	collector.on('collect', async i => {
-		const selection = i.values[0];
-		if (selection === '🗑️' && i.user.id === author.id) {
+		const selection = i.customId;
+		if (selection === 'delete' && i.user.id === author.id) {
 			message.delete();
-		} else if (selection === '🔗' && posted < 1) {
+		} else if (selection === 'link' && posted < 1) {
 			posted += 1;
 			message.channel.send({content: `${original_url}`, flags: [Discord.MessageFlags.SuppressEmbeds]});
 		}
