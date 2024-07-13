@@ -245,7 +245,7 @@ function getActionRow(processed_url) {
 function processURLReaction(message, original_url, author) {
 	let posted = 0;
 
-	const collector = message.createMessageComponentCollector({ componentType: Discord.ComponentType.Button, time: 60_000 });
+	const collector = message.createMessageComponentCollector({ componentType: Discord.ComponentType.Button, time: 3_600_000 });
 
 	collector.on('collect', interaction => {
 		const selection = interaction.customId;
@@ -263,7 +263,7 @@ function processURLReaction(message, original_url, author) {
 
 			message.channel.send({ content: `<@${author.id}> | Original Link: ${original_url}`, flags: [Discord.MessageFlags.SuppressEmbeds], allowedMentions: { parse: [] }, components: [row] })
 				.then((msg) => {
-					const collector = msg.createMessageComponentCollector({ componentType: Discord.ComponentType.Button, time: 60_000 });
+					const collector = msg.createMessageComponentCollector({ componentType: Discord.ComponentType.Button, time: 10_000 });
 
 					collector.on('collect', interaction => {
 						const selection = interaction.customId;
