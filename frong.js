@@ -192,7 +192,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 		
 		let processed_url = original_url.replace("https://instagram.com/", "https://instagramez.com/");
 		let row = getActionRow(processed_url);
-		message.channel.send({ content: `<@${message.author.id}> | [instagramez](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
+		message.channel.send({ content: `<@${message.author.id}> | [instagramez](${processed_url}) *link doesn't work; please click See Original URL*`, allowedMentions: { parse: [] }, components: [row] })
 			.then((msg) => processURLReaction(msg, original_url, message.author));
 	} else if (twitter_urls != null) {
 		let original_url = twitter_urls[0];
