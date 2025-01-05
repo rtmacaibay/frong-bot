@@ -190,7 +190,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 	} else if (instagram_urls != null) {
 		let original_url = instagram_urls[0];
 		
-		let processed_url = original_url.replace("https://instagram.com/", "https://ddinstagram.com/");
+		let processed_url = original_url.replace("https://instagram.com/", "https://instagramez.com/");
 		let row = getActionRow(processed_url);
 		message.channel.send({ content: `<@${message.author.id}> | [ddinstagram](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 			.then((msg) => processURLReaction(msg, original_url, message.author));
