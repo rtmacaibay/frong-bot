@@ -142,7 +142,7 @@ function ExtractURLs(message) {
 			}
 		}
 	}
-	let instagram_urls = message.match(/(https:\/\/(www.)?instagram\.com\/(?:p|reel)\/([^/?#&]+))/);
+	let instagram_urls = message.match(/(https:\/\/(www.)?instagram\.com\/(?:p|reels|reel)\/([^/?#&]+))/);
     let twitter_urls = message.replace("https://x.com/", "https://twitter.com/").match(/(https:\/\/(www.)?(twitter|x)\.com\/[a-zA-Z0-9_]+\/status\/[0-9]+)/);
     let reddit_urls = message.match(/(https?:\/\/(?:www.)?(?:old\.)?reddit\.com\/r\/[A-Za-z0-9_]+\/(?:comments|s)\/[A-Za-z0-9_]+(?:\/[^\/ ]+)?(?:\/\w+)?)|(https?:\/\/(?:www.)?redd\.it\/[A-Za-z0-9]+)/);
 
@@ -192,7 +192,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 		
 		let processed_url = original_url.replace("https://instagram.com/", "https://instagramez.com/");
 		let row = getActionRow(processed_url);
-		message.channel.send({ content: `<@${message.author.id}> | [ddinstagram](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
+		message.channel.send({ content: `<@${message.author.id}> | [instagramez](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 			.then((msg) => processURLReaction(msg, original_url, message.author));
 	} else if (twitter_urls != null) {
 		let original_url = twitter_urls[0];
