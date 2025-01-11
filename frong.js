@@ -171,6 +171,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 			if (quickvids.description == undefined || quickvids.description == "") {
 				descriptionOutput = "";
 			}
+			descriptionOutput = descriptionOutput.substring(0, 3800);
 			let processed_url = quickvids.url;
 			let row = getActionRow(processed_url);
 			let carouselArr = await ProcessTiktokCarousel(processed_url)
