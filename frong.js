@@ -154,40 +154,49 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 
 	if (tiktok_urls != null) {
 		let original_url = tiktok_urls[0];
-		Quickvids(original_url).then(async (quickvids) => {
-			if (quickvids == undefined || quickvids.url == undefined) {
-				let processed_url = original_url.replace("https://tiktok", "https://vxtiktok");
-				let row = getActionRow(processed_url);
+		if (client.quickvidsFlag) {
+			Quickvids(original_url).then(async (quickvids) => {
+				if (quickvids == undefined || quickvids.url == undefined) {
+					let processed_url = original_url.replace("https://tiktok", "https://vxtiktok");
+					let row = getActionRow(processed_url);
 
-				message.channel.send({ content: `<@${message.author.id}> | [vxtiktok](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
-					.then((msg) => processURLReaction(msg, original_url, message.author));
-				return;
-			}
-			let usernameOutput = `@${quickvids.username} | QuickVids.app`;
-			let descriptionOutput = ` | \"${quickvids.description}\"`;
-			if (quickvids.username == undefined || quickvids.username == "") {
-				usernameOutput = "QuickVids.app";
-			}
-			if (quickvids.description == undefined || quickvids.description == "") {
-				descriptionOutput = "";
-			}
-			descriptionOutput = descriptionOutput.substring(0, 1800);
-			let processed_url = quickvids.url;
-			let row = getActionRow(processed_url);
-			let carouselArr = await ProcessTiktokCarousel(processed_url)
-			if (carouselArr.length > 0) {
-				let embeds = [new Discord.EmbedBuilder().setURL(processed_url).setImage(carouselArr[0]).setTitle(`Download All ${carouselArr.length} Images Here`)];
-				let embedArr = carouselArr.slice(0, 4);
-				for (let i = 1; i < embedArr.length; i++) {
-					embeds.push(new Discord.EmbedBuilder().setURL(processed_url).setImage(embedArr[i]));
+					message.channel.send({ content: `<@${message.author.id}> | [vxtiktok](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
+						.then((msg) => processURLReaction(msg, original_url, message.author));
+					return;
 				}
-				message.channel.send({ content: `<@${message.author.id}> | [${usernameOutput}](${processed_url})${descriptionOutput}`, embeds: embeds, allowedMentions: { parse: [] }, components: [row] })
-					.then((msg) => processURLReaction(msg, original_url, message.author));
-			} else {
-				message.channel.send({ content: `<@${message.author.id}> | [${usernameOutput}](${processed_url})${descriptionOutput}`, allowedMentions: { parse: [] }, components: [row] })
-					.then((msg) => processURLReaction(msg, original_url, message.author));
-			}
-		});
+				let usernameOutput = `@${quickvids.username} | QuickVids.app`;
+				let descriptionOutput = ` | \"${quickvids.description}\"`;
+				if (quickvids.username == undefined || quickvids.username == "") {
+					usernameOutput = "QuickVids.app";
+				}
+				if (quickvids.description == undefined || quickvids.description == "") {
+					descriptionOutput = "";
+				}
+				descriptionOutput = descriptionOutput.substring(0, 1800);
+				let processed_url = quickvids.url;
+				let row = getActionRow(processed_url);
+				let carouselArr = await ProcessTiktokCarousel(processed_url)
+				if (carouselArr.length > 0) {
+					let embeds = [new Discord.EmbedBuilder().setURL(processed_url).setImage(carouselArr[0]).setTitle(`Download All ${carouselArr.length} Images Here`)];
+					let embedArr = carouselArr.slice(0, 4);
+					for (let i = 1; i < embedArr.length; i++) {
+						embeds.push(new Discord.EmbedBuilder().setURL(processed_url).setImage(embedArr[i]));
+					}
+					message.channel.send({ content: `<@${message.author.id}> | [${usernameOutput}](${processed_url})${descriptionOutput}`, embeds: embeds, allowedMentions: { parse: [] }, components: [row] })
+						.then((msg) => processURLReaction(msg, original_url, message.author));
+				} else {
+					message.channel.send({ content: `<@${message.author.id}> | [${usernameOutput}](${processed_url})${descriptionOutput}`, allowedMentions: { parse: [] }, components: [row] })
+						.then((msg) => processURLReaction(msg, original_url, message.author));
+				}
+			});
+		} else {
+			let processed_url = original_url.replace("https://tiktok", "https://vxtiktok");
+			let row = getActionRow(processed_url);
+
+			message.channel.send({ content: `<@${message.author.id}> | [vxtiktok](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
+				.then((msg) => processURLReaction(msg, original_url, message.author));
+			return;
+		}
 	} else if (instagram_urls != null) {
 		let original_url = instagram_urls[0];
 		

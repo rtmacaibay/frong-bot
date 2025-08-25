@@ -30,6 +30,8 @@ export default class extends Client {
 
 		this.quickvidsBearerToken = config.quickvidsBearerToken;
 
+		this.quickvidsFlag = config.quickvidsFlag === 'true';
+
 		this.pool = new Pool({
 			connectionString: config.db,
 			ssl: {
