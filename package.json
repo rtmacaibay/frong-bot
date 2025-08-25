@@ -16,7 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^14.17.3",
+    "discord.js": "^14.22.1",
     "dotenv": "^16.4.7",
     "eslint": "^9.18.0",
     "node-fetch": "^3.3.2",

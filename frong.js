@@ -15,7 +15,7 @@ for (const command of Commands) {
 
 const cooldowns = new Discord.Collection();
 
-client.once('ready', () => {
+client.once('clientReady', () => {
 	console.log('Ready!');
 	client.user.setActivity(`Glimpse of Us by Joji`, {
 		type: 'LISTENING',
@@ -195,7 +195,6 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 
 			message.channel.send({ content: `<@${message.author.id}> | [vxtiktok](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 				.then((msg) => processURLReaction(msg, original_url, message.author));
-			return;
 		}
 	} else if (instagram_urls != null) {
 		let original_url = instagram_urls[0];
