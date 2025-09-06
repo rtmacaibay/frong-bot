@@ -157,10 +157,10 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 		if (client.quickvidsFlag) {
 			Quickvids(original_url).then(async (quickvids) => {
 				if (quickvids == undefined || quickvids.url == undefined) {
-					let processed_url = original_url.replace("https://tiktok", "https://vxtiktok");
+					let processed_url = original_url.replace("https://tiktok", "https://www.tiktokez");
 					let row = getActionRow(processed_url);
 
-					message.channel.send({ content: `<@${message.author.id}> | [vxtiktok](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
+					message.channel.send({ content: `<@${message.author.id}> | [tiktokez](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 						.then((msg) => processURLReaction(msg, original_url, message.author));
 					return;
 				}
@@ -190,10 +190,10 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 				}
 			});
 		} else {
-			let processed_url = original_url.replace("https://tiktok", "https://vxtiktok");
+			let processed_url = original_url.replace("https://tiktok", "https://www.tiktokez");
 			let row = getActionRow(processed_url);
 
-			message.channel.send({ content: `<@${message.author.id}> | [vxtiktok](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
+			message.channel.send({ content: `<@${message.author.id}> | [tiktokez](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 				.then((msg) => processURLReaction(msg, original_url, message.author));
 		}
 	} else if (instagram_urls != null) {
@@ -205,7 +205,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 			.then((msg) => processURLReaction(msg, original_url, message.author));
 	} else if (twitter_urls != null) {
 		let original_url = twitter_urls[0];
-		let processed_url = original_url.replace("https://twitter.com/", "https://vxtwitter.com/");
+		let processed_url = original_url.replace("https://twitter.com/", "https://www.twitterez.com/");
 		let row = getActionRow(processed_url);
 		message.channel.send({ content: `<@${message.author.id}> | [vxtwitter](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 			.then((msg) => processURLReaction(msg, original_url, message.author));
@@ -213,9 +213,9 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 		let original_url = reddit_urls[0];
 		let { streamable_url, description } = await ProcessRedditURL(original_url);
 		if (original_url.match(streamable_url)) {
-			let processed_url = original_url.replace("reddit.com/", "rxddit.com/").replace("redd.it/", "rxddit.com/");
+			let processed_url = original_url.replace("reddit.com/", "www.redditez.com/").replace("redd.it/", "www.redditez.com/");
 			let row = getActionRow(original_url);
-			message.channel.send({ content: `<@${message.author.id}> | [rxddit](${processed_url}) | ${description}`, allowedMentions: { parse: [] }, components: [row] })
+			message.channel.send({ content: `<@${message.author.id}> | [redditez](${processed_url}) | ${description}`, allowedMentions: { parse: [] }, components: [row] })
 				.then((msg) => processURLReaction(msg, original_url, message.author));
 		} else {
 			let row = getActionRow(streamable_url);
