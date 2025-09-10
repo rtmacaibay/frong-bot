@@ -32,6 +32,8 @@ export default class extends Client {
 
 		this.quickvidsFlag = config.quickvidsFlag === 'true';
 
+		this.twitterFlag = config.twitterFlag === 'true';
+
 		this.pool = new Pool({
 			connectionString: config.db,
 			ssl: {

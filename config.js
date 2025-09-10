@@ -7,4 +7,5 @@ export const config = {
 	jsonLinkApiKey: process.env.JSON_LINK_API_KEY,
 	quickvidsBearerToken: process.env.QUICKVIDS_BEARER_TOKEN,
 	quickvidsFlag: process.env.QUICKVIDS_FLAG,
+	twitterFlag: process.env.TWITTER_FLAG,
 };

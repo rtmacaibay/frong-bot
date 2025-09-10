@@ -150,7 +150,11 @@ function ExtractURLs(message) {
 }
 
 async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, reddit_urls) {
-	let seen = tiktok_urls != null || instagram_urls != null || twitter_urls != null || reddit_urls != null;
+	let seen = tiktok_urls != null || instagram_urls != null || reddit_urls != null;
+
+	if (client.twitterFlag) {
+		seen = seen || (twitter_urls != null);
+	}
 
 	if (tiktok_urls != null) {
 		let original_url = tiktok_urls[0];
@@ -203,7 +207,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 		let row = getActionRow(processed_url);
 		message.channel.send({ content: `<@${message.author.id}> | [instagramez](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 			.then((msg) => processURLReaction(msg, original_url, message.author));
-	} else if (twitter_urls != null) {
+	} else if (twitter_urls != null && client.twitterFlag) {
 		let original_url = twitter_urls[0];
 		let processed_url = original_url.replace("https://twitter.com/", "https://www.twitterez.com/");
 		let row = getActionRow(processed_url);
