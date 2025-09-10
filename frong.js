@@ -211,7 +211,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 			.then((msg) => processURLReaction(msg, original_url, message.author));
 	} else if (reddit_urls != null) {
 		let original_url = reddit_urls[0];
-		let processed_url = original_url.replace("reddit.com/", "www.redditez.com/").replace("redd.it/", "www.redditez.com/");
+		let processed_url = original_url.replace("www.reddit.com/", "www.redditez.com/").replace("redd.it/", "www.redditez.com/").replace("old.reddit.com/", "www.redditez.com/");
 		let row = getActionRow(original_url);
 		message.channel.send({ content: `<@${message.author.id}> | [redditez](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 			.then((msg) => processURLReaction(msg, original_url, message.author));
