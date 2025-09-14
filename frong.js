@@ -209,7 +209,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 			.then((msg) => processURLReaction(msg, original_url, message.author));
 	} else if (twitter_urls != null && client.twitterFlag) {
 		let original_url = twitter_urls[0];
-		let processed_url = original_url.replace("https://twitter.com/", "https://www.twitterez.com/");
+		let processed_url = original_url.replace("https://twitter.com/", "https://www.vxtwitter.com/");
 		let row = getActionRow(processed_url);
 		message.channel.send({ content: `<@${message.author.id}> | [twitterez](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 			.then((msg) => processURLReaction(msg, original_url, message.author));
