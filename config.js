@@ -8,4 +8,5 @@ export const config = {
 	quickvidsBearerToken: process.env.QUICKVIDS_BEARER_TOKEN,
 	quickvidsFlag: process.env.QUICKVIDS_FLAG,
 	twitterFlag: process.env.TWITTER_FLAG,
+	instagramFlag: process.env.INSTAGRAM_FLAG,
 };

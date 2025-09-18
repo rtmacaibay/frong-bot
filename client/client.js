@@ -34,6 +34,8 @@ export default class extends Client {
 
 		this.twitterFlag = config.twitterFlag === 'true';
 
+		this.instagramFlag = config.instagramFlag === 'true';
+
 		this.pool = new Pool({
 			connectionString: config.db,
 			ssl: {
