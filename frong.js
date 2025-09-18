@@ -152,8 +152,8 @@ function ExtractURLs(message) {
 async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, reddit_urls) {
 	let seen = tiktok_urls != null || instagram_urls != null || reddit_urls != null;
 
-	if (client.twitterFlag) {
-		seen = seen || (twitter_urls != null);
+	if (client.twitterFlag || client.instagramFlag) {
+		seen = seen || (twitter_urls != null) || (instagram_urls != null);
 	}
 
 	if (tiktok_urls != null) {
@@ -200,7 +200,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 			message.channel.send({ content: `<@${message.author.id}> | [tiktokez](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 				.then((msg) => processURLReaction(msg, original_url, message.author));
 		}
-	} else if (instagram_urls != null) {
+	} else if (instagram_urls != null && client.instagramFlag) {
 		let original_url = instagram_urls[0];
 		
 		let processed_url = original_url.replace("https://instagram.com/", "https://g.embedez.com/");
@@ -249,7 +249,7 @@ function processURLReaction(message, original_url, author) {
 
 	collector.on('collect', interaction => {
 		const selection = interaction.customId;
-		if (selection === 'delete' && interaction.user.id === author.id) {
+		if (selection === 'delete') {
 			message.delete();
 		} else if (selection === 'original' && posted < 1) {
 			posted += 1;
@@ -267,7 +267,7 @@ function processURLReaction(message, original_url, author) {
 
 					collector.on('collect', interaction => {
 						const selection = interaction.customId;
-						if (selection === 'delete' && interaction.user.id === author.id) {
+						if (selection === 'delete') {
 							msg.delete();
 						}
 					});
