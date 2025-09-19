@@ -219,7 +219,10 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 		let row = getActionRow(original_url);
 		message.channel.send({ content: `<@${message.author.id}> | [rxddit](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 			.then((msg) => processURLReaction(msg, original_url, message.author));
+	} else if (instagram_urls != null || twitter_urls != null && (client.twitterFlag || client.instagramFlag)) {
+		return;
 	}
+
 	if (seen) { message.delete(); }
 }
 
