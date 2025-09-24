@@ -36,6 +36,10 @@ export default class extends Client {
 
 		this.instagramFlag = config.instagramFlag === 'true';
 
+		this.redditFlag = config.redditFlag === 'true';
+
+		this.tiktokFlag = config.tiktokFlag === 'true';
+
 		this.pool = new Pool({
 			connectionString: config.db,
 			ssl: {
