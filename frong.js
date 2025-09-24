@@ -152,10 +152,6 @@ function ExtractURLs(message) {
 async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, reddit_urls) {
 	let seen = tiktok_urls != null || instagram_urls != null || reddit_urls != null;
 
-	if (client.instagramFlag) {
-		seen = seen || (instagram_urls != null);
-	}
-
 	if (tiktok_urls != null) {
 		let original_url = tiktok_urls[0];
 		if (client.quickvidsFlag) {
@@ -205,10 +201,14 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 			message.channel.send({ content: `<@${message.author.id}> | [tiktok](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 				.then((msg) => processURLReaction(msg, original_url, message.author));
 		}
-	} else if (instagram_urls != null && client.instagramFlag) {
+	} else if (instagram_urls != null) {
 		let original_url = instagram_urls[0];
-		
-		let processed_url = original_url.replace("https://instagram.com/", "https://g.embedez.com/");
+		let processed_url = "";
+		if (client.instagramFlag) {
+			processed_url = original_url.replace("https://instagram.com/", "https://g.embedez.com/");
+		} else {
+			processed_url = original_url.replace("https://instagram.com/", "https://www.vxinstagram.com/");
+		}
 		let row = getActionRow(processed_url);
 		message.channel.send({ content: `<@${message.author.id}> | [instagram](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 			.then((msg) => processURLReaction(msg, original_url, message.author));
@@ -234,8 +234,6 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 		let row = getActionRow(original_url);
 		message.channel.send({ content: `<@${message.author.id}> | [reddit](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 			.then((msg) => processURLReaction(msg, original_url, message.author));
-	} else if (instagram_urls != null && !client.instagramFlag) {
-		return;
 	}
 
 	if (seen) { message.delete(); }
