@@ -234,7 +234,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 		let row = getActionRow(original_url);
 		message.channel.send({ content: `<@${message.author.id}> | [reddit](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 			.then((msg) => processURLReaction(msg, original_url, message.author));
-	} else if (instagram_urls != null && client.instagramFlag) {
+	} else if (instagram_urls != null && !client.instagramFlag) {
 		return;
 	}
 
