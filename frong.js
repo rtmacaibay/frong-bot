@@ -194,10 +194,15 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 				}
 			});
 		} else {
-			let processed_url = original_url.replace("https://tiktok", "https://www.tiktokez");
+			let processed_url = "";
+			if (client.tiktokFlag) {
+				processed_url = original_url.replace("https://tiktok", "https://www.tiktokez");
+			} else {
+				processed_url = original_url.replace("https://tiktok", "https://www.vxtiktok");
+			}
 			let row = getActionRow(processed_url);
 
-			message.channel.send({ content: `<@${message.author.id}> | [tiktokez](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
+			message.channel.send({ content: `<@${message.author.id}> | [tiktok](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 				.then((msg) => processURLReaction(msg, original_url, message.author));
 		}
 	} else if (instagram_urls != null && client.instagramFlag) {
@@ -205,21 +210,31 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 		
 		let processed_url = original_url.replace("https://instagram.com/", "https://g.embedez.com/");
 		let row = getActionRow(processed_url);
-		message.channel.send({ content: `<@${message.author.id}> | [instagramez](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
+		message.channel.send({ content: `<@${message.author.id}> | [instagram](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 			.then((msg) => processURLReaction(msg, original_url, message.author));
 	} else if (twitter_urls != null && client.twitterFlag) {
 		let original_url = twitter_urls[0];
-		let processed_url = original_url.replace("https://twitter.com/", "https://www.vxtwitter.com/");
+		let processed_url = "";
+		if (client.twitterFlag) {
+			processed_url = original_url.replace("https://twitter.com/", "https://www.twitterez.com/");
+		} else {
+			processed_url = original_url.replace("https://twitter.com/", "https://www.vxtwitter.com/");
+		}
 		let row = getActionRow(processed_url);
-		message.channel.send({ content: `<@${message.author.id}> | [twitterez](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
+		message.channel.send({ content: `<@${message.author.id}> | [twitter](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 			.then((msg) => processURLReaction(msg, original_url, message.author));
 	} else if (reddit_urls != null) {
 		let original_url = reddit_urls[0];
-		let processed_url = original_url.replace("old.reddit.com/", "www.rxddit.com/").replace("reddit.com/", "www.rxddit.com/").replace("redd.it/", "www.rxddit.com/");
+		let processed_url = "";
+		if (client.redditFlag) {
+			processed_url = original_url.replace("old.reddit.com/", "www.redditez.com/").replace("reddit.com/", "www.redditez.com/").replace("redd.it/", "www.redditez.com/");
+		} else {
+			processed_url = original_url.replace("old.reddit.com/", "www.rxddit.com/").replace("reddit.com/", "www.rxddit.com/").replace("redd.it/", "www.rxddit.com/");
+		}
 		let row = getActionRow(original_url);
-		message.channel.send({ content: `<@${message.author.id}> | [rxddit](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
+		message.channel.send({ content: `<@${message.author.id}> | [reddit](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 			.then((msg) => processURLReaction(msg, original_url, message.author));
-	} else if (instagram_urls != null || twitter_urls != null && (client.twitterFlag || client.instagramFlag)) {
+	} else if (instagram_urls != null && client.instagramFlag) {
 		return;
 	}
 

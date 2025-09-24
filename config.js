@@ -9,4 +9,6 @@ export const config = {
 	quickvidsFlag: process.env.QUICKVIDS_FLAG,
 	twitterFlag: process.env.TWITTER_FLAG,
 	instagramFlag: process.env.INSTAGRAM_FLAG,
+	redditFlag: process.env.REDDIT_FLAG,
+	tiktokFlag: process.env.TIKTOK_FLAG,
 };
