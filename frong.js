@@ -228,6 +228,9 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 		let processed_url = "";
 		if (client.redditFlag) {
 			processed_url = original_url.replace("old.reddit.com/", "www.redditez.com/").replace("reddit.com/", "www.redditez.com/").replace("redd.it/", "www.redditez.com/");
+			if (!processed_url.includes("comment")) {
+				processed_url = processed_url.replace("redditez.com/", "redditez.com/comments/");
+			}
 		} else {
 			processed_url = original_url.replace("old.reddit.com/", "www.rxddit.com/").replace("reddit.com/", "www.rxddit.com/").replace("redd.it/", "www.rxddit.com/");
 		}
