@@ -245,16 +245,11 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 async function getRedirectUrl(url) {
 	try {
 	  const response = await fetch(url, {
-		method: 'HEAD', // We only need the headers, not the full content
-		redirect: 'manual' // Prevent automatic redirection
+		method: 'GET', 
+		redirect: 'follow' 
 	  });
   
-	  // If the response contains a "Location" header, it's the redirect URL
-	  if (response.headers.has('Location')) {
-		return response.headers.get('Location');
-	  } else {
-		console.log('No redirect found');
-	  }
+	  return response.url;
 	} catch (error) {
 	  console.error('Error fetching the redirect URL:', error);
 	}
