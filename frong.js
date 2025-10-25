@@ -226,11 +226,11 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 	} else if (reddit_urls != null) {
 		let original_url = reddit_urls[0];
 		let processed_url = "";
+		if (original_url.includes("redd.it/")) {
+			original_url = await getRedirectUrl(original_url) || original_url;
+		}
 		if (client.redditFlag) {
 			processed_url = original_url.replace("old.reddit.com/", "www.redditez.com/").replace("reddit.com/", "www.redditez.com/").replace("redd.it/", "www.redditez.com/");
-			if (!processed_url.includes("comment")) {
-				processed_url = processed_url.replace("redditez.com/", "redditez.com/comments/");
-			}
 		} else {
 			processed_url = original_url.replace("old.reddit.com/", "www.rxddit.com/").replace("reddit.com/", "www.rxddit.com/").replace("redd.it/", "www.rxddit.com/");
 		}
@@ -240,6 +240,24 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 	}
 
 	if (seen) { message.delete(); }
+}
+
+async function getRedirectUrl(url) {
+	try {
+	  const response = await fetch(url, {
+		method: 'HEAD', // We only need the headers, not the full content
+		redirect: 'manual' // Prevent automatic redirection
+	  });
+  
+	  // If the response contains a "Location" header, it's the redirect URL
+	  if (response.headers.has('Location')) {
+		return response.headers.get('Location');
+	  } else {
+		console.log('No redirect found');
+	  }
+	} catch (error) {
+	  console.error('Error fetching the redirect URL:', error);
+	}
 }
 
 function getActionRow(processed_url) {
