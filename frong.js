@@ -248,6 +248,7 @@ async function getRedirectUrl(url) {
 		method: 'GET', 
 		redirect: 'follow' 
 	  });
+	  console.log(response);
   
 	  return response.url;
 	} catch (error) {
