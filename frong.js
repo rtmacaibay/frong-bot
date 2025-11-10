@@ -143,14 +143,14 @@ function ExtractURLs(message) {
 		}
 	}
 	let instagram_urls = message.match(/(https:\/\/(www.)?instagram\.com\/(?:p|reels|reel)\/([^/?#&]+))/);
-    let twitter_urls = message.replace("https://x.com/", "https://twitter.com/").match(/(https:\/\/(www.)?(twitter|x)\.com\/[a-zA-Z0-9_]+\/status\/[0-9]+)/);
+    let twitter_urls = message.match(/(https:\/\/(www.)?(twitter|x)\.com\/[a-zA-Z0-9_]+\/status\/[0-9]+)/);
     let reddit_urls = message.match(/(https?:\/\/(?:www.)?(?:old\.)?reddit\.com\/r\/[A-Za-z0-9_]+\/(?:comments|s)\/[A-Za-z0-9_]+(?:\/[^\/ ]+)?(?:\/\w+)?)|(https?:\/\/(?:www.)?redd\.it\/[A-Za-z0-9]+)/);
 
     return { tiktok_urls, instagram_urls, twitter_urls, reddit_urls };
 }
 
 async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, reddit_urls) {
-	let seen = tiktok_urls != null || instagram_urls != null || reddit_urls != null;
+	let seen = tiktok_urls != null || instagram_urls != null || reddit_urls != null || twitter_urls != null;
 
 	if (tiktok_urls != null) {
 		let original_url = tiktok_urls[0];
@@ -216,9 +216,9 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 		let original_url = twitter_urls[0];
 		let processed_url = "";
 		if (client.twitterFlag) {
-			processed_url = original_url.replace("https://twitter.com/", "https://www.twitterez.com/");
+			processed_url = original_url.replace("https://twitter.com/", "https://www.twitterez.com/").replace("https://x.com/", "https://www.xeezz.com/");
 		} else {
-			processed_url = original_url.replace("https://twitter.com/", "https://www.vxtwitter.com/");
+			processed_url = original_url.replace("https://twitter.com/", "https://www.vxtwitter.com/").replace("https://x.com/", "https://www.vxtwitter.com/");
 		}
 		let row = getActionRow(processed_url);
 		message.channel.send({ content: `<@${message.author.id}> | [twitter](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
