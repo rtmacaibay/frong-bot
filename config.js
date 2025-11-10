@@ -11,4 +11,5 @@ export const config = {
 	instagramFlag: process.env.INSTAGRAM_FLAG,
 	redditFlag: process.env.REDDIT_FLAG,
 	tiktokFlag: process.env.TIKTOK_FLAG,
+	embedezFlag: process.env.EMBEDEZ_FLAG,
 };

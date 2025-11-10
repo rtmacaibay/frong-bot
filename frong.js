@@ -146,6 +146,12 @@ function ExtractURLs(message) {
     let twitter_urls = message.match(/(https:\/\/(www.)?(twitter|x)\.com\/[a-zA-Z0-9_]+\/status\/[0-9]+)/);
     let reddit_urls = message.match(/(https?:\/\/(?:www.)?(?:old\.)?reddit\.com\/r\/[A-Za-z0-9_]+\/(?:comments|s)\/[A-Za-z0-9_]+(?:\/[^\/ ]+)?(?:\/\w+)?)|(https?:\/\/(?:www.)?redd\.it\/[A-Za-z0-9]+)/);
 
+	if (client.embedezFlag) {
+		tiktok_urls = null;
+		twitter_urls = null;
+		reddit_urls = null;
+	}
+
     return { tiktok_urls, instagram_urls, twitter_urls, reddit_urls };
 }
 
