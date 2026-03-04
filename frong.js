@@ -150,6 +150,7 @@ function ExtractURLs(message) {
 		tiktok_urls = null;
 		twitter_urls = null;
 		reddit_urls = null;
+		instagram_urls = null;
 	}
 
     return { tiktok_urls, instagram_urls, twitter_urls, reddit_urls };
