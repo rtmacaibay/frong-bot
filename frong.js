@@ -233,6 +233,9 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 	} else if (reddit_urls != null) {
 		let original_url = reddit_urls[0];
 		let processed_url = "";
+		if (original_url.includes("redd.it/")) {
+			original_url = await getRedirectUrl(original_url.replace("redd.it", "rxddit.com")) || original_url;
+		}
 		if (client.redditFlag) {
 			processed_url = original_url.replace("old.reddit.com/", "www.redditez.com/").replace("reddit.com/", "www.redditez.com/").replace("redd.it/", "www.redditez.com/");
 		} else {
@@ -244,6 +247,20 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 	}
 
 	if (seen) { message.delete(); }
+}
+
+async function getRedirectUrl(url) {
+	try {
+	  const response = await fetch(url, {
+		method: 'GET', 
+		redirect: 'follow' 
+	  });
+	  console.log(response);
+  
+	  return response.url;
+	} catch (error) {
+	  console.error('Error fetching the redirect URL:', error);
+	}
 }
 
 function getActionRow(processed_url) {
