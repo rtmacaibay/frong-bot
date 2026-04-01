@@ -9,9 +9,9 @@ export const Grant = {
 		const mainRoleID = '744476760485265479';
 
 		if (message.guildId == mainServerID) {
-			if (message.member.roles.cache.some(role => role.id == mainRoleID)) {
-				const user = message.mentions.users.first();
-				const member = message.mentions.members.first();
+			if (message.member?.roles?.cache?.some(role => role.id == mainRoleID)) {
+				const user = message.mentions?.users?.first();
+				const member = message.mentions?.members?.first();
 				if (member != null && user != null && !member.roles.cache.some(role => role.id == mainRoleID)) {
 					member.roles.add(`${mainRoleID}`);
 					return message.delete().then(message.channel.send({ content: `${user} now has the <@&${mainRoleID}> role`, allowedMentions: { parse: [] } }));
