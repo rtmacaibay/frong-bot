@@ -146,11 +146,27 @@ function ExtractURLs(message) {
     let twitter_urls = message.match(/(https:\/\/(www.)?(twitter|x)\.com\/[a-zA-Z0-9_]+\/status\/[0-9]+)/);
     let reddit_urls = message.match(/(https?:\/\/(?:www.)?(?:old\.)?reddit\.com\/r\/[A-Za-z0-9_]+\/(?:comments|s)\/[A-Za-z0-9_]+(?:\/[^\/ ]+)?(?:\/\w+)?)|(https?:\/\/(?:www.)?redd\.it\/[A-Za-z0-9]+)/);
 
-	if (client.embedezFlag) {
+	if (client.ketoFlag) {
 		tiktok_urls = null;
 		twitter_urls = null;
 		reddit_urls = null;
 		instagram_urls = null;
+	}
+
+	if (!client.redditFlag) {
+		reddit_urls = null;
+	}
+
+	if (!client.twitterFlag) {
+		twitter_urls = null;
+	}
+
+	if (!client.instagramFlag) {
+		instagram_urls = null;
+	}
+
+	if (!client.tiktokFlag) {
+		tiktok_urls = null;
 	}
 
     return { tiktok_urls, instagram_urls, twitter_urls, reddit_urls };
@@ -197,12 +213,7 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 				}
 			});
 		} else {
-			let processed_url = "";
-			if (client.tiktokFlag) {
-				processed_url = original_url.replace("https://tiktok", "https://www.tiktokez");
-			} else {
-				processed_url = original_url.replace("https://tiktok", "https://www.vxtiktok");
-			}
+			let processed_url = original_url.replace("https://tiktok", "https://www.tiktokez");
 			let row = getActionRow(processed_url);
 
 			message.channel.send({ content: `<@${message.author.id}> | [tiktok](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
@@ -210,34 +221,19 @@ async function ProcessURLs(message, tiktok_urls, instagram_urls, twitter_urls, r
 		}
 	} else if (instagram_urls != null) {
 		let original_url = instagram_urls[0];
-		let processed_url = "";
-		if (client.instagramFlag) {
-			processed_url = original_url.replace("https://instagram.com/", "https://g.embedez.com/");
-		} else {
-			processed_url = original_url.replace("https://instagram.com/", "https://www.vxinstagram.com/");
-		}
+		let processed_url = original_url.replace("https://instagram.com/", "https://www.vxinstagram.com/");
 		let row = getActionRow(processed_url);
 		message.channel.send({ content: `<@${message.author.id}> | [instagram](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 			.then((msg) => processURLReaction(msg, original_url, message.author));
 	} else if (twitter_urls != null) {
 		let original_url = twitter_urls[0];
-		let processed_url = "";
-		if (client.twitterFlag) {
-			processed_url = original_url.replace("https://twitter.com/", "https://www.twitterez.com/").replace("https://x.com/", "https://www.xeezz.com/");
-		} else {
-			processed_url = original_url.replace("https://twitter.com/", "https://www.vxtwitter.com/").replace("https://x.com/", "https://www.vxtwitter.com/");
-		}
+		let processed_url = original_url.replace("https://twitter.com/", "https://www.twitterez.com/").replace("https://x.com/", "https://www.xeezz.com/");
 		let row = getActionRow(processed_url);
 		message.channel.send({ content: `<@${message.author.id}> | [twitter](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 			.then((msg) => processURLReaction(msg, original_url, message.author));
 	} else if (reddit_urls != null) {
 		let original_url = reddit_urls[0];
-		let processed_url = "";
-		if (client.redditFlag) {
-			processed_url = original_url.replace("old.reddit.com/", "www.redditez.com/").replace("reddit.com/", "www.redditez.com/").replace("redd.it/", "www.redditez.com/");
-		} else {
-			processed_url = original_url.replace("old.reddit.com/", "www.rxddit.com/").replace("reddit.com/", "www.rxddit.com/").replace("redd.it/", "www.rxddit.com/");
-		}
+		let processed_url = original_url.replace("old.reddit.com/", "www.redditez.com/").replace("reddit.com/", "www.redditez.com/").replace("redd.it/", "www.redditez.com/");
 		let row = getActionRow(original_url);
 		message.channel.send({ content: `<@${message.author.id}> | [reddit](${processed_url})`, allowedMentions: { parse: [] }, components: [row] })
 			.then((msg) => processURLReaction(msg, original_url, message.author));

@@ -40,7 +40,7 @@ export default class extends Client {
 
 		this.tiktokFlag = config.tiktokFlag === 'true';
 
-		this.embedezFlag = config.embedezFlag === 'true';
+		this.ketoFlag = config.ketoFlag === 'true';
 
 		this.pool = new Pool({
 			connectionString: config.db,
